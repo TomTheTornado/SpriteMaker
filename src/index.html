@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Sprite Creator</title>
   <link href="css/main.css" rel="stylesheet" type="text/css" />
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<STYLE>A {text-decoration: none;} </STYLE>
+
+<style>
+  .content {
+    max-width: 500px;
+    margin: auto;
+  }
+</style>
+
 <body>
+  <div class="header">
+    <h1>Sprite Creator</h1>
+  </div>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
-        <h1>Sprite Creator</h1>
-</div> 
-
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>                        
-            </button>
-            <a class="navbar-brand" href="#">Sprite Creator</a>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Drawing</a></li>
-            </ul>
-        </div>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" href="#">Sprite Creator</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Drawing</a>
+        </li>
+      </ul>
     </div>
-</nav>
+  </nav>
 
-<div class="container">
-        <div class="row">
-                <div class="col-lg">
-                    <div class="text-center">
-                        <img src="../resources/tempLogo.png" alt="Temp Logo">
-                        <p>This is a website designed to make sprites! :D</p>
-                        <a class="links" href="">
-                            <div class="drawing_button">Drawing</div>
-                        </a>
-                        <a class="links" href="">
-                            <div class="login_button">Login</div>
-                        </a>
-                        <a class="links" href="">
-                            <div class="about_button">About</div>
-                        </a>
-                    </div>
-                </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg">
+        <div class="text-center">
+          <img src="../resources/tempLogo.png" alt="Temp Logo" />
+          <p>This is a website designed to make sprites! :D</p>
         </div>
-</div>
+      </div>
+    </div>
+  </div>
 
+  <a class="links" href="">
+    <div class="drawing_button">Drawing</div>
+  </a>
+  <a class="links" href="">
+    <div class="login_button">Login</div>
+  </a>
+  <a class="links" href="">
+    <div class="about_button">About</div>
+  </a>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
-    <p>©Sprite Maker™</p>
-</div>
-
+  <div class="footer">Sprite Creator™</div>
 </body>
+
+</html>
