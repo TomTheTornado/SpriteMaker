@@ -4,6 +4,7 @@ let spriteHeightPixels;
 let spriteWidth = 12;
 let spriteHeight = 10;
 
+let mouseDown = false;
 let color;
 
 function setupCanvas() {
@@ -25,12 +26,22 @@ function setupCanvas() {
             context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
             context.fill(); 
         }
-
-    canvas.addEventListener('mouseup', function(evt) {
+    }
+    canvas.addEventListener('mousedown', function(evt) {
+        mouseDown = true;
         let mousePos = getMousePos(canvas, evt);
         drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
         }, false);
-    }
+
+    canvas.addEventListener('mousemove', function(evt) {
+        if (!mouseDown) return;
+        let mousePos = getMousePos(canvas, evt);
+        drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+        }, false);
+
+    canvas.addEventListener('mouseup', function(evt) {
+        mouseDown = false;
+        }, false);
 }
 
 function drawPoint(x, y) {
