@@ -4,7 +4,10 @@ let spriteHeightPixels;
 let spriteWidth = 12;
 let spriteHeight = 10;
 
+let color;
+
 function setupCanvas() {
+    
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
 
@@ -32,10 +35,11 @@ function setupCanvas() {
     }
 }
 function drawPoint(x, y) {
+    color = document.getElementById('selectedColor').value;
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
     context.beginPath();
-    context.fillStyle = "#ffc821";
+    context.fillStyle = color;
     context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth,canvas.height / spriteHeight);       
     context.fill();
 }
