@@ -18,26 +18,26 @@ function setupCanvas() {
         for (let j = 0; j < spriteHeight; j++) {
             if (j % 2 == 0) {
                 context.fillStyle = i % 2 ? "#055a4b" : "#000000";
-            }
-            else {
-                context.fillStyle = i % 2 ? "#000000" : "#055a4b" ;
+            } else {
+                context.fillStyle = i % 2 ? "#000000" : "#055a4b";
             }
             context.beginPath();
             context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
-   
             context.fill(); 
         }
 
-        canvas.addEventListener('mouseup', function(evt) {
-            var mousePos = getMousePos(canvas, evt);
-            drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
-          }, false);
+    canvas.addEventListener('mouseup', function(evt) {
+        let mousePos = getMousePos(canvas, evt);
+        drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+        }, false);
     }
 }
+
 function drawPoint(x, y) {
     color = document.getElementById('selectedColor').value;
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
+
     context.beginPath();
     context.fillStyle = color;
     context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth,canvas.height / spriteHeight);       
