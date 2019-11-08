@@ -1,6 +1,9 @@
 
 function exportCanvas() {
-    console.log("woohoo");
+    let canvas = document.getElementById("mainCanvas");
+    let img = canvas.toDataURL("image/png");
+
+    document.write('<img src="'+img+'"/>');
 }
 
 function saveCanvas() {
