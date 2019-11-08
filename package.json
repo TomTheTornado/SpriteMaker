@@ -1,0 +1,20 @@
+{
+  "name": "sprite_creator",
+  "version": "1.0.0",
+  "description": "A website for create sprites",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha tests/*.spec.js",
+    "coverage": "nyc --include-all-sources --reporter=html --reporter=text npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.linux.iastate.edu:fall2019-cs319-gitprojects/g17.git"
+  },
+  "author": "Daniel Barnes, Thomas Powell",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1"
+  }
+}
