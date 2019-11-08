@@ -3,7 +3,7 @@ let spriteHeightPixels;
 
 let spriteWidth = 12;
 let spriteHeight = 10;
-
+let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
 
@@ -22,6 +22,7 @@ function setupCanvas() {
             } else {
                 context.fillStyle = i % 2 ? "#000000" : "#055a4b";
             }
+            colors[i][j] = "";
             context.beginPath();
             context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
             context.fill(); 
@@ -49,10 +50,38 @@ function drawPoint(x, y) {
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
 
+    colors[x][y] = color;
     context.beginPath();
     context.fillStyle = color;
     context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth,canvas.height / spriteHeight);       
     context.fill();
+}
+
+function drawPointColor(x, y, color) {
+    if (color === "") return;
+    console.log(color);
+    let canvas = document.getElementById("mainCanvas");
+    let context = document.getElementById("mainCanvas").getContext("2d");
+
+    context.beginPath();
+    context.fillStyle = color;
+    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth,canvas.height / spriteHeight);       
+    context.fill();
+}
+
+function exportCanvas() {
+    let canvas = document.getElementById("mainCanvas");
+    let context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            drawPointColor(i, j, colors[i][j]);
+        }
+    }
+    let img = canvas.toDataURL("image/png");
+
+    document.write('<img src="'+img+'"/>');
 }
 
 function getMousePos(canvas, evt) {

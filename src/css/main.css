@@ -107,3 +107,12 @@ div.lg_gr_button:active {
 .list-group-item-custom {
   background: rgb(0, 150, 57, 0.7);
 }
+
+.settings-list {
+  list-style-type: none;
+  padding-left:3px;  
+}
+
+.settings-list li {
+  margin-top: 2px;
+}
