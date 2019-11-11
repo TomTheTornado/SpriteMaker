@@ -68,10 +68,6 @@ function drawPointColor(x, y, color, context) {
 }
 
 function exportCanvas() {
-    // let canvas = document.getElementById("mainCanvas");
-    // let context = canvas.getContext('2d');
-    // context.clearRect(0, 0, canvas.width, canvas.height);
-
     let exportCanvas = createContext(spriteWidth, spriteHeight);
     let exportCanvasContext = exportCanvas.getContext("2d");
     for (let i = 0; i < spriteWidth; i++) {
