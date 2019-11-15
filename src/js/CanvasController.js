@@ -1,8 +1,8 @@
 let spriteWidthPixels;
 let spriteHeightPixels;
 
-let spriteWidth = 12;
-let spriteHeight = 10;
+let spriteWidth = 30;
+let spriteHeight = 30;
 let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
@@ -86,6 +86,14 @@ function createContext(width, height) {
     canvas.width = width;
     canvas.height = height;
     return canvas;
+}
+
+function resizeCanvas(){
+    console.log(document.getElementById('canX').value);
+    spriteWidth = document.getElementById('canX').value;
+    spriteHeight = document.getElementById('canY').value;
+    let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+    setupCanvas();
 }
 
 function getMousePos(canvas, evt) {
