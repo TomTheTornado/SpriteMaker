@@ -1,8 +1,8 @@
 let spriteWidthPixels;
 let spriteHeightPixels;
 
-let spriteWidth = 30;
-let spriteHeight = 30;
+let spriteWidth = 32;
+let spriteHeight = 32;
 let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
@@ -54,7 +54,7 @@ function drawPoint(x, y) {
     colors[x][y] = color;
     context.beginPath();
     context.fillStyle = color;
-    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth,canvas.height / spriteHeight);       
+    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
     context.fill();
 }
 
@@ -92,8 +92,17 @@ function resizeCanvas(){
     console.log(document.getElementById('canX').value);
     spriteWidth = document.getElementById('canX').value;
     spriteHeight = document.getElementById('canY').value;
-    let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+    colors = create2DArray(spriteWidth);
     setupCanvas();
+}
+
+function create2DArray(rows){
+    var arr = [];
+
+    for (var i=0;i<rows;i++){
+        arr[i] = [];
+    }
+    return arr;
 }
 
 function getMousePos(canvas, evt) {
