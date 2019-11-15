@@ -7,6 +7,7 @@ let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
 
+
 function setupCanvas() {
     
     let canvas = document.getElementById("mainCanvas");
