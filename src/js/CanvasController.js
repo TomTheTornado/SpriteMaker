@@ -19,9 +19,9 @@ function setupCanvas() {
     for (let i = 0; i < spriteWidth; i++) {
         for (let j = 0; j < spriteHeight; j++) {
             if (j % 2 == 0) {
-                context.fillStyle = i % 2 ? "#055a4b" : "#000000";
+                context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
             } else {
-                context.fillStyle = i % 2 ? "#000000" : "#055a4b";
+                context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
             }
             colors[i][j] = "";
             context.beginPath();
