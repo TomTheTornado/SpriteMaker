@@ -1,8 +1,8 @@
 let spriteWidthPixels;
 let spriteHeightPixels;
 
-let spriteWidth = 32;
-let spriteHeight = 32;
+let spriteWidth = 30;
+let spriteHeight = 30;
 let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
@@ -82,12 +82,11 @@ function handleTool(mousePos) {
 }
 
 function hoverPoint(x,y){
-    color = document.getElementById('selectedColor').value;
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
     //colors[x][y] = color;
     context.beginPath();
-    context.fillStyle = color;
+    context.fillStyle = "rgba(255, 255, 255, 0.2)";
     context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
     context.fill();
 
@@ -106,8 +105,10 @@ function drawPoint(x, y) {
     colors[x][y] = color;
     context.beginPath();
     context.fillStyle = color;
-    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+    context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
     context.fill();
+    
 }
 
 function drawPointColor(x, y, color, context) {
