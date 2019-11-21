@@ -104,6 +104,18 @@ div.lg_gr_button:active {
   padding: 5px;
 }
 
+canvas{
+  height:1000px;
+  width:100%;
+  background: #333333 url('data:image/svg+xml,\
+  <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000"         fill-opacity=".25" >\
+  <rect x="500" width="500" height="500" />\
+  <rect y="500" width="500" height="500" />\
+  </svg>');
+  background-size: 35px 35px;
+  background-attachment: fixed;
+}
+
 .list-group-item-custom {
   background: rgb(0, 150, 57, 0.7);
 }

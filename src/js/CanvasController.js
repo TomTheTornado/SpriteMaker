@@ -6,6 +6,9 @@ let spriteHeight = 32;
 let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
+let prevX = 0;
+let prevY = 0;
+let tool = "draw";
 
 
 function setupCanvas() {
@@ -36,14 +39,37 @@ function setupCanvas() {
         }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
-        if (!mouseDown) return;
         let mousePos = getMousePos(canvas, evt);
-        drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+        if (mouseDown){
+            drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            return;
+        }
+        //hoverPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
         }, false);
+
 
     canvas.addEventListener('mouseup', function(evt) {
         mouseDown = false;
         }, false);
+}
+
+
+function colorPicker(x,y){
+    document.getElementById('selectedColor').value = colors[x][y];
+}
+
+
+
+function hoverPoint(x,y){
+    color = document.getElementById('selectedColor').value;
+    let canvas = document.getElementById("mainCanvas");
+    let context = document.getElementById("mainCanvas").getContext("2d");
+    //colors[x][y] = color;
+    context.beginPath();
+    context.fillStyle = color;
+    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+    context.fill();
+
 }
 
 function drawPoint(x, y) {
@@ -89,6 +115,13 @@ function createContext(width, height) {
 }
 
 function resizeCanvas(){
+    let context = document.getElementById("mainCanvas").getContext("2d");
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            context.clearRect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
+            context.clearRect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels);
+        }
+    }
     console.log(document.getElementById('canX').value);
     spriteWidth = document.getElementById('canX').value;
     spriteHeight = document.getElementById('canY').value;
