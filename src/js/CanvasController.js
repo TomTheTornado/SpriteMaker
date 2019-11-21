@@ -8,7 +8,7 @@ let mouseDown = false;
 let color;
 let prevX = 0;
 let prevY = 0;
-let tool = "draw";
+let currentTool = "Paintbrush";
 
 
 function setupCanvas() {
@@ -35,13 +35,13 @@ function setupCanvas() {
     canvas.addEventListener('mousedown', function(evt) {
         mouseDown = true;
         let mousePos = getMousePos(canvas, evt);
-        drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+        handleTool(mousePos);
         }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
         let mousePos = getMousePos(canvas, evt);
         if (mouseDown){
-            drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            handleTool(mousePos);
             return;
         }
         //hoverPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
@@ -53,12 +53,33 @@ function setupCanvas() {
         }, false);
 }
 
-
+function setTool(tool) {
+    document.getElementById(currentTool).className="list-group-item list-group-item-success";
+    currentTool = tool;
+    document.getElementById(currentTool).className="list-group-item list-group-item-dark";
+}
 function colorPicker(x,y){
+    if (!colors[x][y]) return;
+    console.log(colors[x][y]);
     document.getElementById('selectedColor').value = colors[x][y];
 }
 
-
+function handleTool(mousePos) {
+    switch(currentTool) {
+        case "ColorPicker":
+            colorPicker(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels))
+            break;
+        case "PaintBucket":
+            break;
+        case "Eraser":
+            erasePoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
+        case "Paintbrush":
+        default:
+            drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
+    }
+}
 
 function hoverPoint(x,y){
     color = document.getElementById('selectedColor').value;
@@ -71,7 +92,12 @@ function hoverPoint(x,y){
     context.fill();
 
 }
-
+function erasePoint(x, y) {
+    let canvas = document.getElementById("mainCanvas");
+    let context = document.getElementById("mainCanvas").getContext("2d");
+    context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+    colors[x][y] = "";
+}
 function drawPoint(x, y) {
     color = document.getElementById('selectedColor').value;
     let canvas = document.getElementById("mainCanvas");
