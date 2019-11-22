@@ -1,4 +1,4 @@
-
+let assert = chai.assert;
 
 describe('Create2DArray', function() {
   describe('when passing in 3', function() {
