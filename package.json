@@ -14,6 +14,7 @@
   "author": "Daniel Barnes, Thomas Powell",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.2.0",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1"
   }
