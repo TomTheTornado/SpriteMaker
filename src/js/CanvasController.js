@@ -1,15 +1,15 @@
 let spriteWidthPixels;
 let spriteHeightPixels;
 
-let spriteWidth = 32;
-let spriteHeight = 32;
+let spriteWidth = 30;
+let spriteHeight = 30;
 let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let colorsFill = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
 let prevX = 0;
 let prevY = 0;
-let tool = "draw";
+let currentTool = "Paintbrush";
 
 
 function setupCanvas() {
@@ -23,26 +23,26 @@ function setupCanvas() {
     for (let i = 0; i < spriteWidth; i++) {
         for (let j = 0; j < spriteHeight; j++) {
             if (j % 2 == 0) {
-                context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
+                //context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
             } else {
-                context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
+                //context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
             }
             colors[i][j] = "";
             context.beginPath();
             context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
-            context.fill(); 
+            //context.fill(); 
         }
     }
     canvas.addEventListener('mousedown', function(evt) {
         mouseDown = true;
         let mousePos = getMousePos(canvas, evt);
-        paintBucket(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+        handleTool(mousePos);
         }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
         let mousePos = getMousePos(canvas, evt);
         if (mouseDown){
-            drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            handleTool(mousePos);
             return;
         }
         //hoverPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
@@ -54,21 +54,33 @@ function setupCanvas() {
         }, false);
 }
 
-
+function setTool(tool) {
+    document.getElementById(currentTool).className="list-group-item list-group-item-success";
+    currentTool = tool;
+    document.getElementById(currentTool).className="list-group-item list-group-item-dark";
+}
 function colorPicker(x,y){
+    if (!colors[x][y]) return;
+    console.log(colors[x][y]);
     document.getElementById('selectedColor').value = colors[x][y];
 }
 
-function hoverPoint(x,y){
-    color = document.getElementById('selectedColor').value;
-    let canvas = document.getElementById("mainCanvas");
-    let context = document.getElementById("mainCanvas").getContext("2d");
-    //colors[x][y] = color;
-    context.beginPath();
-    context.fillStyle = color;
-    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
-    context.fill();
-
+function handleTool(mousePos) {
+    switch(currentTool) {
+        case "ColorPicker":
+            colorPicker(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
+        case "PaintBucket":
+            paintBucket(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
+        case "Eraser":
+            erasePoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
+        case "Paintbrush":
+        default:
+            drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
+    }
 }
 
 function paintBucket(x,y){
@@ -97,6 +109,22 @@ function fillArea(x,y){
     drawPoint(x,y);
 }
 
+function hoverPoint(x,y){
+    let canvas = document.getElementById("mainCanvas");
+    let context = document.getElementById("mainCanvas").getContext("2d");
+    //colors[x][y] = color;
+    context.beginPath();
+    context.fillStyle = "rgba(255, 255, 255, 0.2)";
+    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+    context.fill();
+
+}
+function erasePoint(x, y) {
+    let canvas = document.getElementById("mainCanvas");
+    let context = document.getElementById("mainCanvas").getContext("2d");
+    context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+    colors[x][y] = "";
+}
 function drawPoint(x, y) {
     color = document.getElementById('selectedColor').value;
     let canvas = document.getElementById("mainCanvas");
@@ -105,8 +133,10 @@ function drawPoint(x, y) {
     colors[x][y] = color;
     context.beginPath();
     context.fillStyle = color;
-    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+    context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
     context.fill();
+    
 }
 
 function drawPointColor(x, y, color, context) {
