@@ -4,6 +4,7 @@ let spriteHeightPixels;
 let spriteWidth = 30;
 let spriteHeight = 30;
 let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+let colorsFill = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
 let prevX = 0;
@@ -22,14 +23,14 @@ function setupCanvas() {
     for (let i = 0; i < spriteWidth; i++) {
         for (let j = 0; j < spriteHeight; j++) {
             if (j % 2 == 0) {
-                context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
+                //context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
             } else {
-                context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
+                //context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
             }
             colors[i][j] = "";
             context.beginPath();
             context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
-            context.fill(); 
+            //context.fill(); 
         }
     }
     canvas.addEventListener('mousedown', function(evt) {
@@ -67,9 +68,10 @@ function colorPicker(x,y){
 function handleTool(mousePos) {
     switch(currentTool) {
         case "ColorPicker":
-            colorPicker(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels))
+            colorPicker(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
             break;
         case "PaintBucket":
+            paintBucket(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
             break;
         case "Eraser":
             erasePoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
@@ -79,6 +81,32 @@ function handleTool(mousePos) {
             drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
             break;
     }
+}
+
+function paintBucket(x,y){
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            colorsFill[i][j] = 0;
+        }
+    }
+    fillArea(x,y);
+}
+
+function fillArea(x,y){
+    colorsFill[x][y] = 1;
+    if(x+1 >= 0 && x+1 < spriteWidth){
+        if(colors[x][y] == colors[x+1][y] && colorsFill[x+1][y] == 0){fillArea(x+1,y);}
+    }
+    if(x-1 >= 0 && x-1 < spriteWidth){
+        if(colors[x][y] == colors[x-1][y] && colorsFill[x-1][y] == 0){fillArea(x-1,y);}
+    }
+    if(y+1 >= 0 && y+1 < spriteHeight){
+        if(colors[x][y] == colors[x][y+1] && colorsFill[x][y+1] == 0){fillArea(x,y+1);}
+    }
+    if(y-1 >= 0 && y-1 < spriteHeight){
+        if(colors[x][y] == colors[x][y-1] && colorsFill[x][y-1] == 0){fillArea(x,y-1);}
+    }
+    drawPoint(x,y);
 }
 
 function hoverPoint(x,y){
