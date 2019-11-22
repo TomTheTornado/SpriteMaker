@@ -4,6 +4,7 @@ let spriteHeightPixels;
 let spriteWidth = 32;
 let spriteHeight = 32;
 let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+let colorsFill = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
 let prevX = 0;
@@ -35,7 +36,7 @@ function setupCanvas() {
     canvas.addEventListener('mousedown', function(evt) {
         mouseDown = true;
         let mousePos = getMousePos(canvas, evt);
-        fillArea(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+        paintBucket(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
         }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
@@ -70,19 +71,37 @@ function hoverPoint(x,y){
 
 }
 
+function paintBucket(x,y){
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            colorsFill[i][j] = 0;
+        }
+    }
+    fillArea(x,y);
+}
+
 function fillArea(x,y){
-    console.log(x,y);
+    console.log(colorsFill[x][y].value);
+    colorsFill[x][y] = 1;
     if(x+1 >= 0 && x+1 < spriteWidth){
-        if(colors[x][y] == colors[x+1][y]){fillArea(x+1,y);}
+        if(colors[x][y] == colors[x+1][y] && colorsFill[x+1][y] == 0){
+            fillArea(x+1,y);
+        }
     }
     if(x-1 >= 0 && x-1 < spriteWidth){
-        if(colors[x][y] == colors[x-1][y]){fillArea(x-1,y);}
+        if(colors[x][y] == colors[x-1][y] && colorsFill[x-1][y] == 0){
+            fillArea(x-1,y);
+        }
     }
     if(y+1 >= 0 && y+1 < spriteHeight){
-        if(colors[x][y] == colors[x][y+1]){fillArea(x,y+1);}
+        if(colors[x][y] == colors[x][y+1] && colorsFill[x][y+1] == 0){
+            fillArea(x,y+1);
+        }
     }
     if(y-1 >= 0 && y-1 < spriteHeight){
-        if(colors[x][y] == colors[x][y-1]){fillArea(x,y-1);}
+        if(colors[x][y] == colors[x][y-1] && colorsFill[x][y-1] == 0){
+            fillArea(x,y-1);
+        }
     }
     
     drawPoint(x,y);
