@@ -13,3 +13,17 @@ describe('Create2DArray', function() {
     });
   });
 });
+
+describe('CanvasThing', function() {
+  describe('when passing in a mocked canvas', function() {
+    it('should blah blah blah', () => {
+      var arr = [
+          [],
+          [],
+          []
+      ];
+
+      assert.equal(JSON.stringify(arr), JSON.stringify(create2DArray(3)));
+    });
+  });
+});
