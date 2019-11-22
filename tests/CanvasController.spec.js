@@ -10,18 +10,32 @@ describe('Create2DArray', function() {
       assert.equal(JSON.stringify(arr), JSON.stringify(create2DArray(3)));
     });
   });
-});
-
-describe('CanvasThing', function() {
-  describe('when passing in a mocked canvas', function() {
-    it('should blah blah blah', () => {
+  describe('when passing in -1', function() {
+    it('should throw an exception', () => {
+      assert.throws(() => create2DArray(-1), Error, "");
+    });
+  });
+  describe('when passing in 0', function() {
+    it('should throw an exception', () => {
+      assert.throws(() => create2DArray(0), Error, "");
+    });
+  });
+  describe('when passing in 4.9', function() {
+    it('should create an array with 5 rows.', () => {
       var arr = [
+          [],
+          [],
           [],
           [],
           []
       ];
 
-      assert.equal(JSON.stringify(arr), JSON.stringify(create2DArray(3)));
+      assert.equal(JSON.stringify(arr), JSON.stringify(create2DArray(4.9)));
+    });
+  });
+  describe('when passing in the string "a"', function() {
+    it('should throw an exception', () => {
+      assert.throws(() => create2DArray(a), Error, "");
     });
   });
 });

@@ -194,6 +194,7 @@ function resizeCanvas(){
 }
 
 function create2DArray(rows){
+    if(rows <= 0) throw new Error();
     var arr = [];
 
     for (var i=0;i<rows;i++){
