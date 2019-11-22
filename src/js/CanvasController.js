@@ -81,29 +81,19 @@ function paintBucket(x,y){
 }
 
 function fillArea(x,y){
-    console.log(colorsFill[x][y].value);
     colorsFill[x][y] = 1;
     if(x+1 >= 0 && x+1 < spriteWidth){
-        if(colors[x][y] == colors[x+1][y] && colorsFill[x+1][y] == 0){
-            fillArea(x+1,y);
-        }
+        if(colors[x][y] == colors[x+1][y] && colorsFill[x+1][y] == 0){fillArea(x+1,y);}
     }
     if(x-1 >= 0 && x-1 < spriteWidth){
-        if(colors[x][y] == colors[x-1][y] && colorsFill[x-1][y] == 0){
-            fillArea(x-1,y);
-        }
+        if(colors[x][y] == colors[x-1][y] && colorsFill[x-1][y] == 0){fillArea(x-1,y);}
     }
     if(y+1 >= 0 && y+1 < spriteHeight){
-        if(colors[x][y] == colors[x][y+1] && colorsFill[x][y+1] == 0){
-            fillArea(x,y+1);
-        }
+        if(colors[x][y] == colors[x][y+1] && colorsFill[x][y+1] == 0){fillArea(x,y+1);}
     }
     if(y-1 >= 0 && y-1 < spriteHeight){
-        if(colors[x][y] == colors[x][y-1] && colorsFill[x][y-1] == 0){
-            fillArea(x,y-1);
-        }
+        if(colors[x][y] == colors[x][y-1] && colorsFill[x][y-1] == 0){fillArea(x,y-1);}
     }
-    
     drawPoint(x,y);
 }
 
