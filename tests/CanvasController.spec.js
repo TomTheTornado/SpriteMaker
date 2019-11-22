@@ -9,7 +9,7 @@ describe('Create2DArray', function() {
           []
       ];
 
-      assert.equal(arr, create2DArray(3));
+      assert.equal(JSON.stringify(arr), JSON.stringify(create2DArray(3)));
     });
   });
 });
