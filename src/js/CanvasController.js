@@ -35,7 +35,7 @@ function setupCanvas() {
     canvas.addEventListener('mousedown', function(evt) {
         mouseDown = true;
         let mousePos = getMousePos(canvas, evt);
-        drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+        fillArea(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
         }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
@@ -58,8 +58,6 @@ function colorPicker(x,y){
     document.getElementById('selectedColor').value = colors[x][y];
 }
 
-
-
 function hoverPoint(x,y){
     color = document.getElementById('selectedColor').value;
     let canvas = document.getElementById("mainCanvas");
@@ -70,6 +68,24 @@ function hoverPoint(x,y){
     context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
     context.fill();
 
+}
+
+function fillArea(x,y){
+    console.log(x,y);
+    if(x+1 >= 0 && x+1 < spriteWidth){
+        if(colors[x][y] == colors[x+1][y]){fillArea(x+1,y);}
+    }
+    if(x-1 >= 0 && x-1 < spriteWidth){
+        if(colors[x][y] == colors[x-1][y]){fillArea(x-1,y);}
+    }
+    if(y+1 >= 0 && y+1 < spriteHeight){
+        if(colors[x][y] == colors[x][y+1]){fillArea(x,y+1);}
+    }
+    if(y-1 >= 0 && y-1 < spriteHeight){
+        if(colors[x][y] == colors[x][y-1]){fillArea(x,y-1);}
+    }
+    
+    drawPoint(x,y);
 }
 
 function drawPoint(x, y) {
