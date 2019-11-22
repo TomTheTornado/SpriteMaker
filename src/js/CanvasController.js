@@ -23,14 +23,14 @@ function setupCanvas() {
     for (let i = 0; i < spriteWidth; i++) {
         for (let j = 0; j < spriteHeight; j++) {
             if (j % 2 == 0) {
-                //context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
+                context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
             } else {
-                //context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
+                context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
             }
             colors[i][j] = "";
             context.beginPath();
             context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
-            //context.fill(); 
+            context.fill(); 
         }
     }
     canvas.addEventListener('mousedown', function(evt) {
@@ -123,7 +123,16 @@ function erasePoint(x, y) {
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
     context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+
+    if (y % 2 == 0) {
+        context.fillStyle = x % 2 ? "#1e1e1e" : "#282828";
+    } else {
+        context.fillStyle = x % 2 ? "#282828" : "#1e1e1e";
+    }
     colors[x][y] = "";
+    context.beginPath();
+    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
+    context.fill(); 
 }
 function drawPoint(x, y) {
     color = document.getElementById('selectedColor').value;
