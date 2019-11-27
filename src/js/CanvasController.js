@@ -82,10 +82,24 @@ function handleTool(mousePos) {
         case "ReverseDitherTool":
             reverseDitherTool(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
             break;
+        case "RecolorTool":
+            recolorTool(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
         case "Paintbrush":
         default:
             drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
             break;
+    }
+}
+
+function recolorTool(x,y){
+    let color = colors[x][y];
+    for(let i = 0; i < spriteWidth; i++){
+        for(let j = 0; j < spriteHeight; j++){
+            if(colors[i][j] == color){
+                drawPoint(i,j);
+            }
+        }
     }
 }
 
