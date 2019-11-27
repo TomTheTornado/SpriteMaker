@@ -76,10 +76,23 @@ function handleTool(mousePos) {
         case "Eraser":
             erasePoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
             break;
+        case "DitherTool":
+            ditherTool(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
         case "Paintbrush":
         default:
             drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
             break;
+    }
+}
+
+
+function ditherTool(x,y){
+    if((x%2 == 0)&&(y%2 == 0)){
+        drawPoint(x,y);
+    }
+    if((x%2 == 1)&&(y%2 == 1)){
+        drawPoint(x,y);
     }
 }
 
@@ -134,6 +147,7 @@ function erasePoint(x, y) {
     context.rect(x * spriteWidthPixels, y * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
     context.fill(); 
 }
+
 function drawPoint(x, y) {
     color = document.getElementById('selectedColor').value;
     let canvas = document.getElementById("mainCanvas");
