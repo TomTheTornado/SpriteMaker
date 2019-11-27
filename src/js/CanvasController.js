@@ -79,6 +79,9 @@ function handleTool(mousePos) {
         case "DitherTool":
             ditherTool(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
             break;
+        case "ReverseDitherTool":
+            reverseDitherTool(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+            break;
         case "Paintbrush":
         default:
             drawPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
@@ -86,6 +89,14 @@ function handleTool(mousePos) {
     }
 }
 
+function reverseDitherTool(x,y){
+    if((x%2 == 0)&&(y%2 == 1)){
+        drawPoint(x,y);
+    }
+    if((x%2 == 1)&&(y%2 == 0)){
+        drawPoint(x,y);
+    }
+}
 
 function ditherTool(x,y){
     if((x%2 == 0)&&(y%2 == 0)){
