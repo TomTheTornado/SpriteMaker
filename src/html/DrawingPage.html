@@ -35,7 +35,7 @@
     <br>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-2">
+            <div class="col-1">
                 <!-- Toolbar -->
                 <h5>Tools</h5>
                 
@@ -44,6 +44,13 @@
                         <p>Select color:</p>
                         <input id="selectedColor" type=color value="#FF0000" />
                     </center>
+                </div>
+                <br>
+                <h5>Layer</h5>
+                <div>
+                    <button id="layer1button" onClick="selectButton('layer1button');switchLayer(1);" class="btn btn-light">1</button>
+                    <button id="layer2button" onClick="selectButton('layer2button');switchLayer(2);" class="btn btn-dark">2</button>
+                    <button id="layer3button" onClick="selectButton('layer3button');switchLayer(3);" class="btn btn-dark">3</button>
                 </div>
                 <br><br>
                     <div style="border: 1px solid black;">
