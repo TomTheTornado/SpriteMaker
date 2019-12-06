@@ -115,11 +115,11 @@ canvas{
 }
 
  .list-group-item-dark-custom {
-  background: rgba(52, 60, 68) !important;
+  background: rgb(66, 75, 85) !important;
 }
 
 .list-group-item-selected {
-  background: rgb(66, 75, 85) !important;
+  background: rgba(52, 60, 68) !important;
 }
 
 .settings-list {
