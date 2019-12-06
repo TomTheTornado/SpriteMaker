@@ -114,6 +114,7 @@ function handleTool(mousePos) {
 
 function recolorTool(x,y){
     let color = currentLayer[x][y];
+    if (color == "") return;
     for(let i = 0; i < spriteWidth; i++){
         for(let j = 0; j < spriteHeight; j++){
             if(currentLayer[i][j] == color){
