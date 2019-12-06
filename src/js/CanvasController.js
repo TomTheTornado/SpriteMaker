@@ -42,6 +42,7 @@ function setupCanvas() {
         mouseDown = true;
         let mousePos = getMousePos(canvas, evt);
         handleTool(mousePos);
+        drawAllLayers();
         }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
@@ -50,6 +51,7 @@ function setupCanvas() {
             handleTool(mousePos);
             return;
         }
+        drawAllLayers();
         //hoverPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
         }, false);
 
@@ -58,7 +60,14 @@ function setupCanvas() {
         mouseDown = false;
         }, false);
 }
-
+function switchLayer(layerNumber) {
+    if (layerNumber === 1)
+        currentLayer = colors1;
+    if (layerNumber === 2)
+        currentLayer = colors2;
+    if (layerNumber === 3)
+        currentLayer = colors3;
+}
 function setTool(tool) {
     document.getElementById(currentTool).className="list-group-item list-group-item-success";
     currentTool = tool;
@@ -184,12 +193,12 @@ function drawPoint(x, y) {
     let context = document.getElementById("mainCanvas").getContext("2d");
 
     currentLayer[x][y] = color;
-    context.beginPath();
-    context.fillStyle = color;
-    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
-    context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
-    context.fill();
-    
+    // context.beginPath();
+    // context.fillStyle = color;
+    // context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+    // context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+    // context.fill();
+    drawAllLayers();
 }
 
 function drawPointColor(x, y, color, context) {
@@ -200,6 +209,29 @@ function drawPointColor(x, y, color, context) {
     context.fillStyle = color;
     context.rect(x, y, 1,1);       
     context.fill();
+}
+
+function drawAllLayers() {
+    drawLayer(colors3);
+    drawLayer(colors2);
+    drawLayer(colors1);
+}
+
+function drawLayer(layer) {
+    let canvas = document.getElementById("mainCanvas");
+    let context = document.getElementById("mainCanvas").getContext("2d");
+
+    for (let x = 0; x < spriteWidth; x++) {
+        for (let y = 0; y < spriteHeight; y++) {
+            if (layer[x][y] == "") continue;
+            let color = layer[x][y];
+            context.beginPath();
+            context.fillStyle = color;
+            context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+            context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+            context.fill();
+        }
+    }
 }
 
 function exportCanvas() {
