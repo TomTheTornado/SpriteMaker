@@ -239,7 +239,17 @@ function exportCanvas() {
     let exportCanvasContext = exportCanvas.getContext("2d");
     for (let i = 0; i < spriteWidth; i++) {
         for (let j = 0; j < spriteHeight; j++) {
-            drawPointColor(i, j, currentLayer[i][j], exportCanvasContext);
+            drawPointColor(i, j, colors3[i][j], exportCanvasContext);
+        }
+    }
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            drawPointColor(i, j, colors2[i][j], exportCanvasContext);
+        }
+    }
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            drawPointColor(i, j, colors1[i][j], exportCanvasContext);
         }
     }
     let img = exportCanvas.toDataURL("image/png");
