@@ -298,10 +298,10 @@ function resizeCanvas(){
     let newSpriteWidth = document.getElementById('canX').value;
     let newSpriteHeight = document.getElementById('canY').value;
 
-    if (newSpriteWidth > canvas.width || newSpriteHeight > canvas.height) {
+    if (newSpriteWidth > canvas.scrollWidth || newSpriteHeight > canvas.scrollHeight) {
         document.getElementById('canX').value = spriteWidth;
         document.getElementById('canY').value = spriteHeight;
-        alert(`Value too large! Maximize sprite size is ${canvas.width}x${canvas.height}.`);
+        alert(`Value too large! Maximize sprite size is ${canvas.scrollWidth}x${canvas.scrollHeight}.`);
         return;
     }   
 
