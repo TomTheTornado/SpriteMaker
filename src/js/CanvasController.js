@@ -62,6 +62,7 @@ function setupCanvas() {
 
     canvas.addEventListener ("mouseout", function(evt) {
         mouseDown = false;
+        drawAllLayers();
         // Do nothing else. It should kill all input to the drawing.
         }, false);
 }
