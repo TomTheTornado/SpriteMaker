@@ -59,6 +59,11 @@ function setupCanvas() {
     canvas.addEventListener('mouseup', function(evt) {
         mouseDown = false;
         }, false);
+
+    canvas.addEventListener ("mouseout", function(evt) {
+        mouseDown = false;
+        // Do nothing else. It should kill all input to the drawing.
+        }, false);
 }
 function switchLayer(layerNumber) {
     if (layerNumber === 1)
