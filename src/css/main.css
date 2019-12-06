@@ -114,8 +114,12 @@ canvas{
   background-attachment: fixed;
 }
 
-.list-group-item-custom {
-  background: rgb(0, 150, 57, 0.7);
+ .list-group-item-dark-custom {
+  background: rgba(52, 60, 68) !important;
+}
+
+.list-group-item-selected {
+  background: rgb(66, 75, 85) !important;
 }
 
 .settings-list {

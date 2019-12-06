@@ -75,9 +75,9 @@ function switchLayer(layerNumber) {
         currentLayer = colors3;
 }
 function setTool(tool) {
-    document.getElementById(currentTool).className="list-group-item list-group-item-success";
+    document.getElementById(currentTool).className="list-group-item list-group-item-dark-custom";
     currentTool = tool;
-    document.getElementById(currentTool).className="list-group-item list-group-item-dark";
+    document.getElementById(currentTool).className="list-group-item list-group-item-selected";
 }
 function colorPicker(x,y){
     if (!currentLayer[x][y]) return;
