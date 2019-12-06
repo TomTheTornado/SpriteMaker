@@ -35,7 +35,7 @@
     <br>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-2">
+            <div class="col-1">
                 <!-- Toolbar -->
                 <h5>Tools</h5>
                 
@@ -45,45 +45,46 @@
                         <input id="selectedColor" type=color value="#FF0000" />
                     </center>
                 </div>
-                <br><br>
+                <br>
+                <h5>Layer</h5>
+                <div>
+                    <button id="layer1button" onClick="selectButton('layer1button');switchLayer(1);" class="btn btn-light">1</button>
+                    <button id="layer2button" onClick="selectButton('layer2button');switchLayer(2);" class="btn btn-dark">2</button>
+                    <button id="layer3button" onClick="selectButton('layer3button');switchLayer(3);" class="btn btn-dark">3</button>
+                </div>
+                <br>
+                <h5>Frame</h5>
+                <div>
+                    <button id="prevFrameBtn" onClick="" class="btn btn-dark"><</button>
+                    <button id="nextFrameBtn" onClick="" class="btn btn-dark">></button>
+                </div>
+                <br>
                     <div style="border: 1px solid black;">
                         <ul class="list-group">
-                            <li id="Paintbrush" onclick="setTool('Paintbrush');" class="list-group-item list-group-item-dark">
+                            <li id="Paintbrush" onclick="setTool('Paintbrush');" class="list-group-item list-group-item-selected">
                                 <img src="../../resources/PaintBrush.png" />
                             </li>
-                            <li id="ColorPicker" onclick="setTool('ColorPicker');" class="list-group-item list-group-item-success">
+                            <li id="SelectTool" onclick="setTool('SelectTool');" class="list-group-item list-group-item-dark-custom">
+                                <img src="../../resources/SelectTool.png"/>
+                            </li>
+                            <li id="ColorPicker" onclick="setTool('ColorPicker');" class="list-group-item list-group-item-dark-custom">
                                 <img src="../../resources/ColorPicker.png" />
                             </li>
-                            <li id="PaintBucket" onclick="setTool('PaintBucket');" class="list-group-item list-group-item-success">
+                            <li id="PaintBucket" onclick="setTool('PaintBucket');" class="list-group-item list-group-item-dark-custom">
                                 <img src="../../resources/PaintBucket.png"/>
                             </li>
-                            <li id="Eraser" onclick="setTool('Eraser');" class="list-group-item list-group-item-success">
+                            <li id="Eraser" onclick="setTool('Eraser');" class="list-group-item list-group-item-dark-custom">
                                 <img src="../../resources/Eraser.png" />
                             </li>
-                            <li id="DitherTool" onclick="setTool('DitherTool');" class="list-group-item list-group-item-success">
+                            <li id="DitherTool" onclick="setTool('DitherTool');" class="list-group-item list-group-item-dark-custom">
                                 <img src="../../resources/DitherTool.png" />
                             </li>
-                            <li id="ReverseDitherTool" onclick="setTool('ReverseDitherTool');" class="list-group-item list-group-item-success">
+                            <li id="ReverseDitherTool" onclick="setTool('ReverseDitherTool');" class="list-group-item list-group-item-dark-custom">
                                 <img src="../../resources/ReverseDitherTool.png" />
                             </li>
-                            <li id="RecolorTool" onclick="setTool('RecolorTool');" class="list-group-item list-group-item-success">
+                            <li id="RecolorTool" onclick="setTool('RecolorTool');" class="list-group-item list-group-item-dark-custom">
                                 <img src="../../resources/RecolorTool.png"/>
                             </li>
-                            <li class="list-group-item list-group-item-success">
-                                <img src="img.jpg" />
-                            </li>
-                            <li class="list-group-item list-group-item-success">
-                                <img src="img.jpg" />
-                            </li>
-                            <li class="list-group-item list-group-item-success">
-                                <img src="img.jpg" />
-                            </li>
-                            <li class="list-group-item list-group-item-success">
-                                <img src="img.jpg"/>
-                            </li>
-                            <li class="list-group-item list-group-item-success">
-                                <img src="img.jpg" />
-                            </li> 
                         </ul>
                     </div>
             </div>
