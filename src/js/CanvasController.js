@@ -176,19 +176,8 @@ function hoverPoint(x,y){
     context.fill();
 }
 function erasePoint(x, y) {
-    let canvas = document.getElementById("mainCanvas");
-    let context = document.getElementById("mainCanvas").getContext("2d");
-    context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
-
-    if (y % 2 == 0) {
-        context.fillStyle = x % 2 ? "#1e1e1e" : "#282828";
-    } else {
-        context.fillStyle = x % 2 ? "#282828" : "#1e1e1e";
-    }
-    colors[x][y] = "";
-    context.beginPath();
-    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
-    context.fill(); 
+    currentLayer[x][y] = "";
+    drawAllLayersAtAPoint(x, y);
 }
 
 function drawPoint(x, y) {
@@ -216,6 +205,12 @@ function drawAllLayers() {
     drawLayer(colors1);
 }
 
+function drawAllLayersAtAPoint(x, y) {
+    drawLayerAtAPoint(colors3,x,y);
+    drawLayerAtAPoint(colors2,x,y);
+    drawLayerAtAPoint(colors1,x,y);
+}
+
 function drawLayer(layer) {
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
@@ -239,6 +234,26 @@ function drawLayer(layer) {
             context.fill();
         }
     }
+}
+
+function drawLayerAtAPoint(layer,x,y) {
+    let canvas = document.getElementById("mainCanvas");
+    let context = document.getElementById("mainCanvas").getContext("2d");
+    let color;
+    if (colors1[x][y] == "" && colors2[x][y] == "" && colors3[x][y] == "") {
+        if (y % 2 == 0) {
+            color = x % 2 ? "#1e1e1e" : "#282828";
+        } else {
+            color = x % 2 ? "#282828" : "#1e1e1e";
+        }
+    }
+    else if (layer[x][y] == "") return;
+    else {color = layer[x][y];}
+    context.beginPath();
+    context.fillStyle = color;
+    context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+    context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+    context.fill();
 }
 
 function exportCanvas() {
