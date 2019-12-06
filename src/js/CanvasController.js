@@ -52,7 +52,7 @@ function setupCanvas() {
             return;
         }
         drawAllLayers();
-        //hoverPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
+        hoverPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
         }, false);
 
 
@@ -164,12 +164,10 @@ function fillArea(x,y){
 function hoverPoint(x,y){
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
-    //colors[x][y] = color;
     context.beginPath();
-    context.fillStyle = "rgba(255, 255, 255, 0.2)";
+    context.fillStyle = "rgba(255, 255, 255, 0.4)";
     context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
     context.fill();
-
 }
 function erasePoint(x, y) {
     let canvas = document.getElementById("mainCanvas");
@@ -193,11 +191,6 @@ function drawPoint(x, y) {
     let context = document.getElementById("mainCanvas").getContext("2d");
 
     currentLayer[x][y] = color;
-    // context.beginPath();
-    // context.fillStyle = color;
-    // context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
-    // context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
-    // context.fill();
     drawAllLayers();
 }
 
@@ -223,8 +216,16 @@ function drawLayer(layer) {
 
     for (let x = 0; x < spriteWidth; x++) {
         for (let y = 0; y < spriteHeight; y++) {
-            if (layer[x][y] == "") continue;
-            let color = layer[x][y];
+            let color;
+            if (colors1[x][y] == "" && colors2[x][y] == "" && colors3[x][y] == "") {
+                if (y % 2 == 0) {
+                    color = x % 2 ? "#1e1e1e" : "#282828";
+                } else {
+                    color = x % 2 ? "#282828" : "#1e1e1e";
+                }
+            }
+            else if (layer[x][y] == "") continue;
+            else {color = layer[x][y];}
             context.beginPath();
             context.fillStyle = color;
             context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
