@@ -281,6 +281,7 @@ function resizeCanvas(){
     if (newSpriteWidth > canvas.width || newSpriteHeight > canvas.Height) {
         document.getElementById('canX').value = spriteWidth;
         document.getElementById('canY').value = spriteHeight;
+        alert(`Value too large! Maximize sprite size is ${canvas.width}x${canvas.height}.`);
         return;
     }   
 
