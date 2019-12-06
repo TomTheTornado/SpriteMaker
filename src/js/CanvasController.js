@@ -3,7 +3,10 @@ let spriteHeightPixels;
 
 let spriteWidth = 30;
 let spriteHeight = 30;
-let colors = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+let colors1 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+let colors2 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+let colors3 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+let currentLayer = colors1;
 let colorsFill = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
@@ -27,7 +30,9 @@ function setupCanvas() {
             } else {
                 context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
             }
-            colors[i][j] = "";
+            colors1[i][j] = "";
+            colors2[i][j] = "";
+            colors3[i][j] = "";
             context.beginPath();
             context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
             context.fill(); 
@@ -60,9 +65,9 @@ function setTool(tool) {
     document.getElementById(currentTool).className="list-group-item list-group-item-dark";
 }
 function colorPicker(x,y){
-    if (!colors[x][y]) return;
-    console.log(colors[x][y]);
-    document.getElementById('selectedColor').value = colors[x][y];
+    if (!currentLayer[x][y]) return;
+    console.log(currentLayer[x][y]);
+    document.getElementById('selectedColor').value = currentLayer[x][y];
 }
 
 function handleTool(mousePos) {
@@ -93,10 +98,10 @@ function handleTool(mousePos) {
 }
 
 function recolorTool(x,y){
-    let color = colors[x][y];
+    let color = currentLayer[x][y];
     for(let i = 0; i < spriteWidth; i++){
         for(let j = 0; j < spriteHeight; j++){
-            if(colors[i][j] == color){
+            if(currentLayer[i][j] == color){
                 drawPoint(i,j);
             }
         }
@@ -133,16 +138,16 @@ function paintBucket(x,y){
 function fillArea(x,y){
     colorsFill[x][y] = 1;
     if(x+1 >= 0 && x+1 < spriteWidth){
-        if(colors[x][y] == colors[x+1][y] && colorsFill[x+1][y] == 0){fillArea(x+1,y);}
+        if(currentLayer[x][y] == currentLayer[x+1][y] && colorsFill[x+1][y] == 0){fillArea(x+1,y);}
     }
     if(x-1 >= 0 && x-1 < spriteWidth){
-        if(colors[x][y] == colors[x-1][y] && colorsFill[x-1][y] == 0){fillArea(x-1,y);}
+        if(currentLayer[x][y] == currentLayer[x-1][y] && colorsFill[x-1][y] == 0){fillArea(x-1,y);}
     }
     if(y+1 >= 0 && y+1 < spriteHeight){
-        if(colors[x][y] == colors[x][y+1] && colorsFill[x][y+1] == 0){fillArea(x,y+1);}
+        if(currentLayer[x][y] == currentLayer[x][y+1] && colorsFill[x][y+1] == 0){fillArea(x,y+1);}
     }
     if(y-1 >= 0 && y-1 < spriteHeight){
-        if(colors[x][y] == colors[x][y-1] && colorsFill[x][y-1] == 0){fillArea(x,y-1);}
+        if(currentLayer[x][y] == currentLayer[x][y-1] && colorsFill[x][y-1] == 0){fillArea(x,y-1);}
     }
     drawPoint(x,y);
 }
@@ -178,7 +183,7 @@ function drawPoint(x, y) {
     let canvas = document.getElementById("mainCanvas");
     let context = document.getElementById("mainCanvas").getContext("2d");
 
-    colors[x][y] = color;
+    currentLayer[x][y] = color;
     context.beginPath();
     context.fillStyle = color;
     context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
@@ -202,7 +207,7 @@ function exportCanvas() {
     let exportCanvasContext = exportCanvas.getContext("2d");
     for (let i = 0; i < spriteWidth; i++) {
         for (let j = 0; j < spriteHeight; j++) {
-            drawPointColor(i, j, colors[i][j], exportCanvasContext);
+            drawPointColor(i, j, currentLayer[i][j], exportCanvasContext);
         }
     }
     let img = exportCanvas.toDataURL("image/png");
@@ -228,7 +233,9 @@ function resizeCanvas(){
     console.log(document.getElementById('canX').value);
     spriteWidth = document.getElementById('canX').value;
     spriteHeight = document.getElementById('canY').value;
-    colors = create2DArray(spriteWidth);
+    colors1 = create2DArray(spriteWidth);
+    colors2 = create2DArray(spriteWidth);
+    colors3 = create2DArray(spriteWidth);
     setupCanvas();
 }
 
