@@ -272,19 +272,32 @@ function createContext(width, height) {
 }
 
 function resizeCanvas(){
-    let context = document.getElementById("mainCanvas").getContext("2d");
+    let canvas = document.getElementById("mainCanvas");
+    let context = canvas.getContext("2d");
+
+    let newSpriteWidth = document.getElementById('canX').value;
+    let newSpriteHeight = document.getElementById('canY').value;
+
+    if (newSpriteWidth > canvas.width || newSpriteHeight > canvas.Height) {
+        document.getElementById('canX').value = spriteWidth;
+        document.getElementById('canY').value = spriteHeight;
+        return;
+    }   
+
+    spriteWidth = newSpriteWidth;
+    spriteHeight = newSpriteHeight;
+
     for (let i = 0; i < spriteWidth; i++) {
         for (let j = 0; j < spriteHeight; j++) {
             context.clearRect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
             context.clearRect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels);
         }
     }
-    console.log(document.getElementById('canX').value);
-    spriteWidth = document.getElementById('canX').value;
-    spriteHeight = document.getElementById('canY').value;
+
     colors1 = create2DArray(spriteWidth);
     colors2 = create2DArray(spriteWidth);
     colors3 = create2DArray(spriteWidth);
+    currentLayer = colors1;
     setupCanvas();
 }
 
