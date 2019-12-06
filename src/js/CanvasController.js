@@ -14,7 +14,10 @@ let prevX = 0;
 let prevY = 0;
 let currentTool = "Paintbrush";
 
-
+let currentFrame = 0;
+let totalFrames = 0;
+let currentFrameLayers = [];
+let frames = [];
 function setupCanvas() {
     
     let canvas = document.getElementById("mainCanvas");
@@ -38,6 +41,9 @@ function setupCanvas() {
             context.fill(); 
         }
     }
+
+    setupFrame();
+
     canvas.addEventListener('mousedown', function(evt) {
         mouseDown = true;
         let mousePos = getMousePos(canvas, evt);
@@ -65,6 +71,39 @@ function setupCanvas() {
         drawAllLayers();
         // Do nothing else. It should kill all input to the drawing.
         }, false);
+}
+function setupFrame() {
+    totalFrames += 1;
+    currentFrameLayers = [];
+
+    currentFrameLayers.push(colors1);
+    currentFrameLayers.push(colors2);
+    currentFrameLayers.push(colors3);
+
+    frames.push(currentFrameLayers);
+}
+
+// switchForward: false = backwards, true = forwards.
+function switchFrame(switchForward) {
+    if (currentFrame == 0 && !switchForward) return;
+    // Save previous frame
+    frames[currentFrame][0] = colors1;
+    frames[currentFrame][1] = colors2;
+    frames[currentFrame][2] = colors3;
+
+    if (switchForward)
+        currentFrame += 1;
+    else
+        currentFrame -= 1;
+
+    if (currentFrame > totalFrames - 1) {
+        console.log("Increase Frame Count");
+        setupFrame();
+    }
+    console.log(`${currentFrame} and ${totalFrames}`)
+    colors1 = frames[currentFrame][0];
+    colors2 = frames[currentFrame][1];
+    colors3 = frames[currentFrame][2];
 }
 function switchLayer(layerNumber) {
     if (layerNumber === 1)
