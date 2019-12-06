@@ -192,7 +192,6 @@ function drawPoint(x, y) {
 
 function drawPointColor(x, y, color, context) {
     if (color === "") return;
-    console.log(color);
 
     context.beginPath();
     context.fillStyle = color;
@@ -276,8 +275,13 @@ function exportCanvas() {
         }
     }
     let img = exportCanvas.toDataURL("image/png");
-
-    document.write('<img src="'+img+'"/>');
+    let button = document.getElementById('exportBtn');
+    button.setAttribute("href", img);
+        var link = document.createElement('a');
+        link.download = 'YourSprite.png';
+        link.href = img;
+        link.click();
+    //document.write('<img src="'+img+'"/>');
 }
 
 function createContext(width, height) {
