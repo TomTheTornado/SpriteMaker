@@ -16,12 +16,10 @@ let currentTool = "Paintbrush";
 
 let currentFrame = 0;
 let totalFrames = 0;
-let currentFrameLayers = [];
 let frames = [];
 function setupCanvas() {
-    
     let canvas = document.getElementById("mainCanvas");
-    let context = document.getElementById("mainCanvas").getContext("2d");
+    let context = canvas.getContext("2d");
 
     spriteWidthPixels = canvas.width / spriteWidth;
     spriteHeightPixels = canvas.height / spriteHeight;
@@ -68,42 +66,77 @@ function setupCanvas() {
 
     canvas.addEventListener ("mouseout", function(evt) {
         mouseDown = false;
+        
         drawAllLayers();
         // Do nothing else. It should kill all input to the drawing.
         }, false);
 }
+
 function setupFrame() {
-    totalFrames += 1;
-    currentFrameLayers = [];
+//   colors1 = create2DArray(spriteWidth);
+//   colors2 = create2DArray(spriteWidth);
+//   colors3 = create2DArray(spriteWidth);
+  totalFrames += 1;
 
-    currentFrameLayers.push(colors1);
-    currentFrameLayers.push(colors2);
-    currentFrameLayers.push(colors3);
+  for (let i = 0; i < spriteWidth; i++) {
+    for (let j = 0; j < spriteHeight; j++) {
+        colors1[i][j] = "";
+        colors2[i][j] = "";
+        colors3[i][j] = "";
+    }
+  }
 
-    frames.push(currentFrameLayers);
+  let currentFrameLayers = [];
+  currentFrameLayers.push(colors1);
+  currentFrameLayers.push(colors2);
+  currentFrameLayers.push(colors3);
+
+  frames.push(currentFrameLayers);
 }
 
 // switchForward: false = backwards, true = forwards.
 function switchFrame(switchForward) {
     if (currentFrame == 0 && !switchForward) return;
-    // Save previous frame
-    frames[currentFrame][0] = colors1;
-    frames[currentFrame][1] = colors2;
-    frames[currentFrame][2] = colors3;
+    //console.log(colors1);
+    // save previous frames
+    frames[currentFrame][0] = Array.from(colors1);
+    frames[currentFrame][1] = Array.from(colors2);
+    frames[currentFrame][2] = Array.from(colors3);
 
+    // change current frame.
     if (switchForward)
         currentFrame += 1;
     else
         currentFrame -= 1;
 
     if (currentFrame > totalFrames - 1) {
-        console.log("Increase Frame Count");
         setupFrame();
     }
-    console.log(`${currentFrame} and ${totalFrames}`)
+
+    // switch frames
     colors1 = frames[currentFrame][0];
     colors2 = frames[currentFrame][1];
     colors3 = frames[currentFrame][2];
+
+    drawAllLayers();
+}
+
+function clearDrawingCanvas() {
+    let canvas = document.getElementById("mainCanvas");
+    let context = canvas.getContext("2d");
+
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            if (j % 2 == 0) {
+                context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
+            } else {
+                context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
+            }
+            context.beginPath();
+            context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
+            context.fill(); 
+        }
+    }
 }
 function switchLayer(layerNumber) {
     if (layerNumber === 1)
