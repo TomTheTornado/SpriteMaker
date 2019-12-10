@@ -396,8 +396,38 @@ function drawLayerAtAPoint(layer,x,y) {
     context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
     context.fill();
 }
-
 function exportCanvas() {
+    let exportSpriteSheet = createContext(spriteWidth * totalFrames, spriteHeight);
+    let exportSpriteSheetContext = exportSpriteSheet.getContext("2d");
+    for (let exportingFrame = 0; exportingFrame < totalFrames; exportingFrame++) {
+        let exportCanvas = createContext(spriteWidth, spriteHeight);
+        let exportCanvasContext = exportCanvas.getContext("2d");
+        for (let i = 0; i < spriteWidth; i++) {
+            for (let j = 0; j < spriteHeight; j++) {
+                drawPointColor(i, j, frames[exportingFrame][2][i][j], exportCanvasContext);
+            }
+        }
+        for (let i = 0; i < spriteWidth; i++) {
+            for (let j = 0; j < spriteHeight; j++) {
+                drawPointColor(i, j, frames[exportingFrame][1][i][j], exportCanvasContext);
+            }
+        }
+        for (let i = 0; i < spriteWidth; i++) {
+            for (let j = 0; j < spriteHeight; j++) {
+                drawPointColor(i, j, frames[exportingFrame][0][i][j], exportCanvasContext);
+            }
+        }
+        let img = exportCanvas;
+        exportSpriteSheetContext.drawImage(img, spriteWidth * exportingFrame, 0);
+    }
+    let button = document.getElementById('exportBtn');
+        button.setAttribute("href", exportSpriteSheet);
+            var link = document.createElement('a');
+            link.download = 'YourSpriteSheet.png';
+            link.href = exportSpriteSheet.toDataURL("image/png");
+            link.click();
+}
+function exportCanvasFrame() {
     let exportCanvas = createContext(spriteWidth, spriteHeight);
     let exportCanvasContext = exportCanvas.getContext("2d");
     for (let i = 0; i < spriteWidth; i++) {
@@ -422,7 +452,6 @@ function exportCanvas() {
         link.download = 'YourSprite.png';
         link.href = img;
         link.click();
-    //document.write('<img src="'+img+'"/>');
 }
 
 function createContext(width, height) {
