@@ -93,6 +93,7 @@ function setupFrame() {
   currentFrameLayers.push(JSON.parse(JSON.stringify((newArray))));
 
   frames[currentFrame] = JSON.parse(JSON.stringify((currentFrameLayers)));
+  switchLayer(layerNum);
 }
 
 // switchForward: false = backwards, true = forwards.
@@ -117,7 +118,7 @@ function switchFrame(switchForward) {
     colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
     colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
     colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
-
+    
     clearDrawingCanvas();
     drawAllLayers();
 }
@@ -141,15 +142,15 @@ function clearDrawingCanvas() {
 }
 function switchLayer(layerNumber) {
     if (layerNumber === 1) {
-        currentLayer = JSON.parse(JSON.stringify(colors1));
+        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][0])));
         layerNum = 1;
     }
     if (layerNumber === 2) {
-        currentLayer = JSON.parse(JSON.stringify(colors2));
+        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][1])));
         layerNum = 2;
     }
     if (layerNumber === 3) {
-        currentLayer = JSON.parse(JSON.stringify(colors3));
+        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][2])));
         layerNum = 3;
     }
 }
@@ -268,15 +269,15 @@ function drawPoint(x, y) {
     // save previous frames
     if (layerNum == 1) {
         frames[currentFrame][0] = JSON.parse(JSON.stringify((currentLayer)));
-        colors1 = JSON.parse(JSON.stringify((currentLayer)));
+        colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
     }
     if (layerNum == 2) {
         frames[currentFrame][1] = JSON.parse(JSON.stringify((currentLayer)));
-        colors2 = JSON.parse(JSON.stringify((currentLayer)));
+        colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
     }
     if (layerNum == 3) {
         frames[currentFrame][2] = JSON.parse(JSON.stringify((currentLayer)));
-        colors3 = JSON.parse(JSON.stringify((currentLayer)));
+        colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
     }
 
     drawAllLayers();
@@ -292,15 +293,15 @@ function drawPointColor(x, y, color, context) {
 }
 
 function drawAllLayers() {
-    drawLayer(JSON.parse(JSON.stringify(frames[currentFrame][2])));
-    drawLayer(JSON.parse(JSON.stringify(frames[currentFrame][1])));
-    drawLayer(JSON.parse(JSON.stringify(frames[currentFrame][0])));
+    drawLayer(JSON.parse(JSON.stringify(colors3)));
+    drawLayer(JSON.parse(JSON.stringify(colors2)));
+    drawLayer(JSON.parse(JSON.stringify(colors1)));
 }
 
 function drawAllLayersAtAPoint(x, y) {
-    drawLayerAtAPoint(frames[currentFrame][2],x,y);
-    drawLayerAtAPoint(frames[currentFrame][1],x,y);
-    drawLayerAtAPoint(frames[currentFrame][0],x,y);
+    drawLayerAtAPoint(JSON.parse(JSON.stringify(frames[currentFrame][2])),x,y);
+    drawLayerAtAPoint(JSON.parse(JSON.stringify(frames[currentFrame][1])),x,y);
+    drawLayerAtAPoint(JSON.parse(JSON.stringify(frames[currentFrame][0])),x,y);
 }
 
 function drawLayer(layer) {
