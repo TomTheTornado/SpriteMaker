@@ -15,6 +15,9 @@ let prevX = 0;
 let prevY = 0;
 let currentTool = "Paintbrush";
 
+let previewPlaying = false;
+let playingFrame = 0;
+
 let currentFrame = 0;
 let totalFrames = 0;
 let frames = [];
@@ -48,15 +51,18 @@ function setupCanvas() {
         let mousePos = getMousePos(canvas, evt);
         handleTool(mousePos);
         drawAllLayers();
+        showPreview();
         }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
         let mousePos = getMousePos(canvas, evt);
         if (mouseDown){
             handleTool(mousePos);
+            //showPreview();
             return;
         }
         drawAllLayers();
+        showPreview();
         hoverPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
         }, false);
 
@@ -125,6 +131,24 @@ function switchFrame(switchForward) {
 
 function clearDrawingCanvas() {
     let canvas = document.getElementById("mainCanvas");
+    let context = canvas.getContext("2d");
+
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            if (j % 2 == 0) {
+                context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
+            } else {
+                context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
+            }
+            context.beginPath();
+            context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
+            context.fill(); 
+        }
+    }
+}
+
+function clearCanvas(whichCanvas) {
+    let canvas = whichCanvas;
     let context = canvas.getContext("2d");
 
     for (let i = 0; i < spriteWidth; i++) {
@@ -298,6 +322,12 @@ function drawAllLayers() {
     drawLayer(JSON.parse(JSON.stringify(colors1)));
 }
 
+function drawAllLayersOfFrame(frame, canvas) {
+    drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][2])), canvas);
+    drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][1])), canvas);
+    drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][0])), canvas);
+}
+
 function drawAllLayersAtAPoint(x, y) {
     drawLayerAtAPoint(JSON.parse(JSON.stringify(frames[currentFrame][2])),x,y);
     drawLayerAtAPoint(JSON.parse(JSON.stringify(frames[currentFrame][1])),x,y);
@@ -319,6 +349,24 @@ function drawLayer(layer) {
                 }
             }
             else if (layer[x][y] == "") continue;
+            else {color = layer[x][y];}
+            context.beginPath();
+            context.fillStyle = color;
+            context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+            context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+            context.fill();
+        }
+    }
+}
+
+function drawLayerOnCanvas(layer, whichCanvas) {
+    let canvas = whichCanvas;
+    let context = whichCanvas.getContext("2d");
+
+    for (let x = 0; x < spriteWidth; x++) {
+        for (let y = 0; y < spriteHeight; y++) {
+            let color;
+            if (layer[x][y] == "") continue;
             else {color = layer[x][y];}
             context.beginPath();
             context.fillStyle = color;
@@ -434,4 +482,26 @@ function getMousePos(canvas, evt) {
         x: (evt.clientX - rect.left) * scaleX,
         y: (evt.clientY - rect.top) * scaleY
     }
+  }
+
+  function showPreview() {
+    let preview = document.getElementById('preview');
+    let previewContext = preview.getContext("2d");
+
+    let mainCanvas = document.getElementById("mainCanvas");
+    if (!previewPlaying) {
+        previewContext.drawImage(mainCanvas, 0, 0);
+    } else {
+        let fakeCanvas = createContext(mainCanvas.width, mainCanvas.height);
+        clearCanvas(fakeCanvas);
+        drawAllLayersOfFrame(playingFrame, fakeCanvas);
+        previewContext.drawImage(fakeCanvas, 0, 0);
+        playingFrame += 1;
+        if (playingFrame >= totalFrames)
+            playingFrame = 0;
+    }
+  }
+
+  function TogglePreviewAnimation() {
+      previewPlaying = !previewPlaying;
   }
