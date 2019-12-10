@@ -4,9 +4,10 @@ let spriteHeightPixels;
 let spriteWidth = 30;
 let spriteHeight = 30;
 let colors1 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
-let colors2 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
-let colors3 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+var colors2 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+var colors3 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let currentLayer = colors1;
+let layerNum = 1;
 let colorsFill = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
@@ -78,31 +79,30 @@ function setupFrame() {
 //   colors3 = create2DArray(spriteWidth);
   totalFrames += 1;
 
+  newArray = create2DArray(spriteWidth);
+
   for (let i = 0; i < spriteWidth; i++) {
     for (let j = 0; j < spriteHeight; j++) {
-        colors1[i][j] = "";
-        colors2[i][j] = "";
-        colors3[i][j] = "";
+        newArray[i][j] = "";
     }
   }
 
   let currentFrameLayers = [];
-  currentFrameLayers.push(colors1);
-  currentFrameLayers.push(colors2);
-  currentFrameLayers.push(colors3);
+  currentFrameLayers.push(JSON.parse(JSON.stringify((newArray))));
+  currentFrameLayers.push(JSON.parse(JSON.stringify((newArray))));
+  currentFrameLayers.push(JSON.parse(JSON.stringify((newArray))));
 
-  frames.push(currentFrameLayers);
+  frames[currentFrame] = JSON.parse(JSON.stringify((currentFrameLayers)));
 }
 
 // switchForward: false = backwards, true = forwards.
 function switchFrame(switchForward) {
     if (currentFrame == 0 && !switchForward) return;
-    //console.log(colors1);
-    // save previous frames
-    frames[currentFrame][0] = Array.from(colors1);
-    frames[currentFrame][1] = Array.from(colors2);
-    frames[currentFrame][2] = Array.from(colors3);
 
+    frames[currentFrame][0] = JSON.parse(JSON.stringify(colors1));
+    frames[currentFrame][1] = JSON.parse(JSON.stringify((colors2)));
+    frames[currentFrame][2] = JSON.parse(JSON.stringify((colors3)));
+    
     // change current frame.
     if (switchForward)
         currentFrame += 1;
@@ -114,10 +114,11 @@ function switchFrame(switchForward) {
     }
 
     // switch frames
-    colors1 = frames[currentFrame][0];
-    colors2 = frames[currentFrame][1];
-    colors3 = frames[currentFrame][2];
+    colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+    colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
+    colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
 
+    clearDrawingCanvas();
     drawAllLayers();
 }
 
@@ -139,12 +140,18 @@ function clearDrawingCanvas() {
     }
 }
 function switchLayer(layerNumber) {
-    if (layerNumber === 1)
-        currentLayer = colors1;
-    if (layerNumber === 2)
-        currentLayer = colors2;
-    if (layerNumber === 3)
-        currentLayer = colors3;
+    if (layerNumber === 1) {
+        currentLayer = JSON.parse(JSON.stringify(colors1));
+        layerNum = 1;
+    }
+    if (layerNumber === 2) {
+        currentLayer = JSON.parse(JSON.stringify(colors2));
+        layerNum = 2;
+    }
+    if (layerNumber === 3) {
+        currentLayer = JSON.parse(JSON.stringify(colors3));
+        layerNum = 3;
+    }
 }
 function setTool(tool) {
     document.getElementById(currentTool).className="list-group-item list-group-item-dark-custom";
@@ -255,10 +262,23 @@ function erasePoint(x, y) {
 
 function drawPoint(x, y) {
     color = document.getElementById('selectedColor').value;
-    let canvas = document.getElementById("mainCanvas");
-    let context = document.getElementById("mainCanvas").getContext("2d");
 
     currentLayer[x][y] = color;
+
+    // save previous frames
+    if (layerNum == 1) {
+        frames[currentFrame][0] = JSON.parse(JSON.stringify((currentLayer)));
+        colors1 = JSON.parse(JSON.stringify((currentLayer)));
+    }
+    if (layerNum == 2) {
+        frames[currentFrame][1] = JSON.parse(JSON.stringify((currentLayer)));
+        colors2 = JSON.parse(JSON.stringify((currentLayer)));
+    }
+    if (layerNum == 3) {
+        frames[currentFrame][2] = JSON.parse(JSON.stringify((currentLayer)));
+        colors3 = JSON.parse(JSON.stringify((currentLayer)));
+    }
+
     drawAllLayers();
 }
 
@@ -272,15 +292,15 @@ function drawPointColor(x, y, color, context) {
 }
 
 function drawAllLayers() {
-    drawLayer(colors3);
-    drawLayer(colors2);
-    drawLayer(colors1);
+    drawLayer(JSON.parse(JSON.stringify(frames[currentFrame][2])));
+    drawLayer(JSON.parse(JSON.stringify(frames[currentFrame][1])));
+    drawLayer(JSON.parse(JSON.stringify(frames[currentFrame][0])));
 }
 
 function drawAllLayersAtAPoint(x, y) {
-    drawLayerAtAPoint(colors3,x,y);
-    drawLayerAtAPoint(colors2,x,y);
-    drawLayerAtAPoint(colors1,x,y);
+    drawLayerAtAPoint(frames[currentFrame][2],x,y);
+    drawLayerAtAPoint(frames[currentFrame][1],x,y);
+    drawLayerAtAPoint(frames[currentFrame][0],x,y);
 }
 
 function drawLayer(layer) {
