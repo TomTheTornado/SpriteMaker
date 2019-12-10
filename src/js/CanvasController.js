@@ -4,9 +4,10 @@ let spriteHeightPixels;
 let spriteWidth = 30;
 let spriteHeight = 30;
 let colors1 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
-let colors2 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
-let colors3 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+var colors2 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
+var colors3 = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let currentLayer = colors1;
+let layerNum = 1;
 let colorsFill = Array.from(Array(spriteWidth), () => new Array(spriteHeight));
 let mouseDown = false;
 let color;
@@ -14,11 +15,15 @@ let prevX = 0;
 let prevY = 0;
 let currentTool = "Paintbrush";
 
+let previewPlaying = false;
+let playingFrame = 0;
 
+let currentFrame = 0;
+let totalFrames = 0;
+let frames = [];
 function setupCanvas() {
-    
     let canvas = document.getElementById("mainCanvas");
-    let context = document.getElementById("mainCanvas").getContext("2d");
+    let context = canvas.getContext("2d");
 
     spriteWidthPixels = canvas.width / spriteWidth;
     spriteHeightPixels = canvas.height / spriteHeight;
@@ -38,20 +43,26 @@ function setupCanvas() {
             context.fill(); 
         }
     }
+
+    setupFrame();
+
     canvas.addEventListener('mousedown', function(evt) {
         mouseDown = true;
         let mousePos = getMousePos(canvas, evt);
         handleTool(mousePos);
         drawAllLayers();
+        showPreview();
         }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
         let mousePos = getMousePos(canvas, evt);
         if (mouseDown){
             handleTool(mousePos);
+            //showPreview();
             return;
         }
         drawAllLayers();
+        showPreview();
         hoverPoint(Math.floor(mousePos.x / spriteWidthPixels), Math.floor(mousePos.y / spriteHeightPixels));
         }, false);
 
@@ -62,17 +73,110 @@ function setupCanvas() {
 
     canvas.addEventListener ("mouseout", function(evt) {
         mouseDown = false;
+        
         drawAllLayers();
         // Do nothing else. It should kill all input to the drawing.
         }, false);
 }
+
+function setupFrame() {
+//   colors1 = create2DArray(spriteWidth);
+//   colors2 = create2DArray(spriteWidth);
+//   colors3 = create2DArray(spriteWidth);
+  totalFrames += 1;
+
+  newArray = create2DArray(spriteWidth);
+
+  for (let i = 0; i < spriteWidth; i++) {
+    for (let j = 0; j < spriteHeight; j++) {
+        newArray[i][j] = "";
+    }
+  }
+
+  let currentFrameLayers = [];
+  currentFrameLayers.push(JSON.parse(JSON.stringify((newArray))));
+  currentFrameLayers.push(JSON.parse(JSON.stringify((newArray))));
+  currentFrameLayers.push(JSON.parse(JSON.stringify((newArray))));
+
+  frames[currentFrame] = JSON.parse(JSON.stringify((currentFrameLayers)));
+  switchLayer(layerNum);
+}
+
+// switchForward: false = backwards, true = forwards.
+function switchFrame(switchForward) {
+    if (currentFrame == 0 && !switchForward) return;
+
+    frames[currentFrame][0] = JSON.parse(JSON.stringify(colors1));
+    frames[currentFrame][1] = JSON.parse(JSON.stringify((colors2)));
+    frames[currentFrame][2] = JSON.parse(JSON.stringify((colors3)));
+    
+    // change current frame.
+    if (switchForward)
+        currentFrame += 1;
+    else
+        currentFrame -= 1;
+
+    if (currentFrame > totalFrames - 1) {
+        setupFrame();
+    }
+
+    // switch frames
+    colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+    colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
+    colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
+    
+    clearDrawingCanvas();
+    drawAllLayers();
+}
+
+function clearDrawingCanvas() {
+    let canvas = document.getElementById("mainCanvas");
+    let context = canvas.getContext("2d");
+
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            if (j % 2 == 0) {
+                context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
+            } else {
+                context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
+            }
+            context.beginPath();
+            context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
+            context.fill(); 
+        }
+    }
+}
+
+function clearCanvas(whichCanvas) {
+    let canvas = whichCanvas;
+    let context = canvas.getContext("2d");
+
+    for (let i = 0; i < spriteWidth; i++) {
+        for (let j = 0; j < spriteHeight; j++) {
+            if (j % 2 == 0) {
+                context.fillStyle = i % 2 ? "#1e1e1e" : "#282828";
+            } else {
+                context.fillStyle = i % 2 ? "#282828" : "#1e1e1e";
+            }
+            context.beginPath();
+            context.rect(i * spriteWidthPixels, j * spriteHeightPixels, spriteWidthPixels, spriteHeightPixels); 
+            context.fill(); 
+        }
+    }
+}
 function switchLayer(layerNumber) {
-    if (layerNumber === 1)
-        currentLayer = colors1;
-    if (layerNumber === 2)
-        currentLayer = colors2;
-    if (layerNumber === 3)
-        currentLayer = colors3;
+    if (layerNumber === 1) {
+        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+        layerNum = 1;
+    }
+    if (layerNumber === 2) {
+        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][1])));
+        layerNum = 2;
+    }
+    if (layerNumber === 3) {
+        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][2])));
+        layerNum = 3;
+    }
 }
 function setTool(tool) {
     document.getElementById(currentTool).className="list-group-item list-group-item-dark-custom";
@@ -183,10 +287,23 @@ function erasePoint(x, y) {
 
 function drawPoint(x, y) {
     color = document.getElementById('selectedColor').value;
-    let canvas = document.getElementById("mainCanvas");
-    let context = document.getElementById("mainCanvas").getContext("2d");
 
     currentLayer[x][y] = color;
+
+    // save previous frames
+    if (layerNum == 1) {
+        frames[currentFrame][0] = JSON.parse(JSON.stringify((currentLayer)));
+        colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+    }
+    if (layerNum == 2) {
+        frames[currentFrame][1] = JSON.parse(JSON.stringify((currentLayer)));
+        colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
+    }
+    if (layerNum == 3) {
+        frames[currentFrame][2] = JSON.parse(JSON.stringify((currentLayer)));
+        colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
+    }
+
     drawAllLayers();
 }
 
@@ -200,15 +317,21 @@ function drawPointColor(x, y, color, context) {
 }
 
 function drawAllLayers() {
-    drawLayer(colors3);
-    drawLayer(colors2);
-    drawLayer(colors1);
+    drawLayer(JSON.parse(JSON.stringify(colors3)));
+    drawLayer(JSON.parse(JSON.stringify(colors2)));
+    drawLayer(JSON.parse(JSON.stringify(colors1)));
+}
+
+function drawAllLayersOfFrame(frame, canvas) {
+    drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][2])), canvas);
+    drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][1])), canvas);
+    drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][0])), canvas);
 }
 
 function drawAllLayersAtAPoint(x, y) {
-    drawLayerAtAPoint(colors3,x,y);
-    drawLayerAtAPoint(colors2,x,y);
-    drawLayerAtAPoint(colors1,x,y);
+    drawLayerAtAPoint(JSON.parse(JSON.stringify(frames[currentFrame][2])),x,y);
+    drawLayerAtAPoint(JSON.parse(JSON.stringify(frames[currentFrame][1])),x,y);
+    drawLayerAtAPoint(JSON.parse(JSON.stringify(frames[currentFrame][0])),x,y);
 }
 
 function drawLayer(layer) {
@@ -226,6 +349,24 @@ function drawLayer(layer) {
                 }
             }
             else if (layer[x][y] == "") continue;
+            else {color = layer[x][y];}
+            context.beginPath();
+            context.fillStyle = color;
+            context.rect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);
+            context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
+            context.fill();
+        }
+    }
+}
+
+function drawLayerOnCanvas(layer, whichCanvas) {
+    let canvas = whichCanvas;
+    let context = whichCanvas.getContext("2d");
+
+    for (let x = 0; x < spriteWidth; x++) {
+        for (let y = 0; y < spriteHeight; y++) {
+            let color;
+            if (layer[x][y] == "") continue;
             else {color = layer[x][y];}
             context.beginPath();
             context.fillStyle = color;
@@ -255,8 +396,38 @@ function drawLayerAtAPoint(layer,x,y) {
     context.clearRect(x * spriteWidthPixels, y * spriteHeightPixels, canvas.width / spriteWidth , canvas.height / spriteHeight);       
     context.fill();
 }
-
 function exportCanvas() {
+    let exportSpriteSheet = createContext(spriteWidth * totalFrames, spriteHeight);
+    let exportSpriteSheetContext = exportSpriteSheet.getContext("2d");
+    for (let exportingFrame = 0; exportingFrame < totalFrames; exportingFrame++) {
+        let exportCanvas = createContext(spriteWidth, spriteHeight);
+        let exportCanvasContext = exportCanvas.getContext("2d");
+        for (let i = 0; i < spriteWidth; i++) {
+            for (let j = 0; j < spriteHeight; j++) {
+                drawPointColor(i, j, frames[exportingFrame][2][i][j], exportCanvasContext);
+            }
+        }
+        for (let i = 0; i < spriteWidth; i++) {
+            for (let j = 0; j < spriteHeight; j++) {
+                drawPointColor(i, j, frames[exportingFrame][1][i][j], exportCanvasContext);
+            }
+        }
+        for (let i = 0; i < spriteWidth; i++) {
+            for (let j = 0; j < spriteHeight; j++) {
+                drawPointColor(i, j, frames[exportingFrame][0][i][j], exportCanvasContext);
+            }
+        }
+        let img = exportCanvas;
+        exportSpriteSheetContext.drawImage(img, spriteWidth * exportingFrame, 0);
+    }
+    let button = document.getElementById('exportBtn');
+        button.setAttribute("href", exportSpriteSheet);
+            var link = document.createElement('a');
+            link.download = 'YourSpriteSheet.png';
+            link.href = exportSpriteSheet.toDataURL("image/png");
+            link.click();
+}
+function exportCanvasFrame() {
     let exportCanvas = createContext(spriteWidth, spriteHeight);
     let exportCanvasContext = exportCanvas.getContext("2d");
     for (let i = 0; i < spriteWidth; i++) {
@@ -281,7 +452,6 @@ function exportCanvas() {
         link.download = 'YourSprite.png';
         link.href = img;
         link.click();
-    //document.write('<img src="'+img+'"/>');
 }
 
 function createContext(width, height) {
@@ -341,4 +511,26 @@ function getMousePos(canvas, evt) {
         x: (evt.clientX - rect.left) * scaleX,
         y: (evt.clientY - rect.top) * scaleY
     }
+  }
+
+  function showPreview() {
+    let preview = document.getElementById('preview');
+    let previewContext = preview.getContext("2d");
+
+    let mainCanvas = document.getElementById("mainCanvas");
+    if (!previewPlaying) {
+        previewContext.drawImage(mainCanvas, 0, 0);
+    } else {
+        let fakeCanvas = createContext(mainCanvas.width, mainCanvas.height);
+        clearCanvas(fakeCanvas);
+        drawAllLayersOfFrame(playingFrame, fakeCanvas);
+        previewContext.drawImage(fakeCanvas, 0, 0);
+        playingFrame += 1;
+        if (playingFrame >= totalFrames)
+            playingFrame = 0;
+    }
+  }
+
+  function TogglePreviewAnimation() {
+      previewPlaying = !previewPlaying;
   }

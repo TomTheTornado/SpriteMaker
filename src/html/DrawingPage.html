@@ -31,7 +31,7 @@
       </ul>
     </div>
   </nav>
-<body onload="setupCanvas();">
+<body onload="setupCanvas();setInterval(function() {showPreview();},100);">
     <br>
     <div class="container-fluid">
         <div class="row">
@@ -55,8 +55,8 @@
                 <br>
                 <h5>Frame</h5>
                 <div>
-                    <button id="prevFrameBtn" onClick="" class="btn btn-dark"><</button>
-                    <button id="nextFrameBtn" onClick="" class="btn btn-dark">></button>
+                    <button id="prevFrameBtn" onClick="switchFrame(false);" class="btn btn-dark"><</button>
+                    <button id="nextFrameBtn" onClick="switchFrame(true);" class="btn btn-dark">></button>
                 </div>
                 <br>
                     <div style="border: 1px solid black;">
@@ -88,7 +88,7 @@
                         </ul>
                     </div>
             </div>
-            <div class="col" style="">
+            <div class="col">
                 <!-- Drawing Part -->
                 <h5>Draw Here</h5>
                 
@@ -101,7 +101,7 @@
                     <!-- Preview Window -->
                     <h5>Window</h5>
                     <br>
-                    <canvas style="width: 100%; height: auto; border: 1px solid black;"></canvas>
+                    <canvas id="preview" style="width: 100%; height: auto; border: 1px solid black;"></canvas>
                 </div>
                 <div class="row">
                     <!-- Export/Settings -->
@@ -110,16 +110,17 @@
                 </div>
                 <div class="row">
                     <ul class="settings-list">
-                        <div class="col">
+                        <button id="togglePreviewBtn" class="btn btn-dark" onclick="TogglePreviewAnimation();HandleToggleStyle();" value="true">Play&nbsp;&nbsp;&nbsp;</button>
+                        <li>
+                            <button class="btn btn-dark" onclick="resizeCanvas();">Resize</button>
                             X:<input id="canX" type="text" name="canX" style="width: 3vh" value="30">
                             Y:<input id="canY" type="text" name="canY" style="width: 3vh" value="30">
-                            <button class="btn btn-dark" onclick="resizeCanvas();">Resize</button>
-                        </div>
-                        <li>
-                            <button class="btn btn-dark" onclick="saveCanvas();">Save&nbsp;&nbsp;&nbsp;</button>
                         </li>
                         <li>
-                            <button id="exportBtn" class="btn btn-dark" onclick="exportCanvas();">Export</button>
+                            <button class="btn btn-dark" onclick="exportCanvas();">Export Spritesheet</button>
+                        </li>
+                        <li>
+                            <button id="exportBtn" class="btn btn-dark" onclick="exportCanvasFrame();">Export Frame&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                         </li>
                     </ul>
                 </div>

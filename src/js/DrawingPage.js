@@ -9,3 +9,15 @@ function selectButton(element) {
 function saveCanvas() {
     // TODO
 }
+
+function HandleToggleStyle() {
+    let btn = document.getElementById('togglePreviewBtn');
+
+    if (btn.value == "true") {
+        btn.value = "false";
+        btn.innerHTML = "Stop&nbsp;&nbsp;";
+    } else {
+        btn.value = "true";
+        btn.innerHTML = "Play&nbsp;&nbsp;&nbsp;";
+    }
+}
