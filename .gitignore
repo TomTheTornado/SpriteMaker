@@ -1,0 +1,5 @@
+node_modules/
+
+# Nyc code coverage
+.nyc_output
+coverage/
