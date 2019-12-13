@@ -106,6 +106,19 @@ function setupFrame() {
 function switchFrame(switchForward) {
     if (currentFrame == 0 && !switchForward) return;
 
+    // save previous frames
+    if (layerNum == 1) {
+        colors1 = JSON.parse(JSON.stringify((currentLayer)));
+    }
+
+    if (layerNum == 2) {
+        colors1 = JSON.parse(JSON.stringify((currentLayer)));
+    }
+
+    if (layerNum == 3) {
+        colors1 = JSON.parse(JSON.stringify((currentLayer)));
+    }
+
     frames[currentFrame][0] = JSON.parse(JSON.stringify(colors1));
     frames[currentFrame][1] = JSON.parse(JSON.stringify((colors2)));
     frames[currentFrame][2] = JSON.parse(JSON.stringify((colors3)));
@@ -124,6 +137,8 @@ function switchFrame(switchForward) {
     colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
     colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
     colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
+
+    switchLayer(layerNum);
     
     clearDrawingCanvas();
     drawAllLayers();
@@ -166,15 +181,15 @@ function clearCanvas(whichCanvas) {
 }
 function switchLayer(layerNumber) {
     if (layerNumber === 1) {
-        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+        currentLayer = (frames[currentFrame][0]);
         layerNum = 1;
     }
     if (layerNumber === 2) {
-        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][1])));
+        currentLayer = (frames[currentFrame][1]);
         layerNum = 2;
     }
     if (layerNumber === 3) {
-        currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][2])));
+        currentLayer = (frames[currentFrame][2]);
         layerNum = 3;
     }
 }
@@ -282,7 +297,23 @@ function hoverPoint(x,y){
 }
 function erasePoint(x, y) {
     currentLayer[x][y] = "";
-    drawAllLayersAtAPoint(x, y);
+    //drawAllLayersAtAPoint(x, y);
+
+    // save previous frames
+    if (layerNum == 1) {
+        frames[currentFrame][0] = JSON.parse(JSON.stringify((currentLayer)));
+        colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+    }
+    if (layerNum == 2) {
+        frames[currentFrame][1] = JSON.parse(JSON.stringify((currentLayer)));
+        colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
+    }
+    if (layerNum == 3) {
+        frames[currentFrame][2] = JSON.parse(JSON.stringify((currentLayer)));
+        colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
+    }
+
+    drawAllLayers();
 }
 
 function drawPoint(x, y) {
