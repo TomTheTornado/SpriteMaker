@@ -82,7 +82,7 @@ function setupCanvas() {
 }
 
 function saveSpriteJson() {
-    let name = "sprite";
+    let name = document.getElementById('filename').value || "sprite";
     let json = { frames,
                  "totalFrames": totalFrames,
                  "spriteWidth": spriteWidth,
@@ -502,11 +502,12 @@ function exportCanvas() {
         exportSpriteSheetContext.drawImage(img, spriteWidth * exportingFrame, 0);
     }
     let button = document.getElementById('exportBtn');
-        button.setAttribute("href", exportSpriteSheet);
-            var link = document.createElement('a');
-            link.download = 'YourSpriteSheet.png';
-            link.href = exportSpriteSheet.toDataURL("image/png");
-            link.click();
+    let name = document.getElementById('filename').value || "spritesheet";
+    button.setAttribute("href", exportSpriteSheet);
+    var link = document.createElement('a');
+    link.download = name + ".png";
+    link.href = exportSpriteSheet.toDataURL("image/png");
+    link.click();
 }
 function exportCanvasFrame() {
     let exportCanvas = createContext(spriteWidth, spriteHeight);
@@ -529,10 +530,11 @@ function exportCanvasFrame() {
     let img = exportCanvas.toDataURL("image/png");
     let button = document.getElementById('exportBtn');
     button.setAttribute("href", img);
-        var link = document.createElement('a');
-        link.download = 'YourSprite.png';
-        link.href = img;
-        link.click();
+    let name = document.getElementById('filename').value || "sprite";
+    var link = document.createElement('a');
+    link.download = name + ".png";
+    link.href = img;
+    link.click();
 }
 
 function createContext(width, height) {
