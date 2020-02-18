@@ -108,23 +108,26 @@ function uploadFile() {
 function onReaderLoad(event) {
     let obj = JSON.parse(event.target.result);
 
+    // Set values from JSON
     spriteWidth = obj.spriteWidth;
     spriteHeight = obj.spriteHeight;
 
     totalFrames = obj.totalFrames;
-    currentFrame = 0;
     frames = obj.frames;
 
+    // Set miscellaneous variables based on the above values
     let canvas = document.getElementById("mainCanvas");
-    let context = canvas.getContext("2d");
 
     spriteWidthPixels = canvas.width / spriteWidth;
     spriteHeightPixels = canvas.height / spriteHeight;
 
+    currentFrame = 0;
     colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
     colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
     colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
-    //setupCanvas();
+
+    currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+    layerNum = 1;
     
 }
 
