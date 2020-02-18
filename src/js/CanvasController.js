@@ -21,6 +21,7 @@ let playingFrame = 0;
 let currentFrame = 0;
 let totalFrames = 0;
 let frames = [];
+
 function setupCanvas() {
     let canvas = document.getElementById("mainCanvas");
     let context = canvas.getContext("2d");
@@ -45,6 +46,7 @@ function setupCanvas() {
     }
 
     setupFrame();
+    document.getElementById('loadFile').addEventListener('change', uploadFile);
 
     canvas.addEventListener('mousedown', function(evt) {
         mouseDown = true;
@@ -79,10 +81,58 @@ function setupCanvas() {
         }, false);
 }
 
+function saveSpriteJson() {
+    let name = document.getElementById('filename').value || "sprite";
+    let json = { frames,
+                 "totalFrames": totalFrames,
+                 "spriteWidth": spriteWidth,
+                 "spriteHeight": spriteHeight
+                }
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json));
+    let a = document.getElementById('downloadSave');
+    a.setAttribute("href", dataStr);
+    a.setAttribute("download", name + ".json");
+    a.click();
+}
+
+function loadSpriteJson() {
+    document.getElementById('loadFile').click();
+}
+
+function uploadFile() {
+    let reader = new FileReader();
+    reader.onload = onReaderLoad;
+    reader.readAsText(event.target.files[0]);
+}
+
+function onReaderLoad(event) {
+    let obj = JSON.parse(event.target.result);
+
+    // Set values from JSON
+    spriteWidth = obj.spriteWidth;
+    spriteHeight = obj.spriteHeight;
+
+    totalFrames = obj.totalFrames;
+    frames = obj.frames;
+
+    // Set miscellaneous variables based on the above values
+    let canvas = document.getElementById("mainCanvas");
+
+    spriteWidthPixels = canvas.width / spriteWidth;
+    spriteHeightPixels = canvas.height / spriteHeight;
+
+    currentFrame = 0;
+    playingFrame = 0;
+
+    colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+    colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
+    colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
+
+    currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+    layerNum = 1;
+}
+
 function setupFrame() {
-//   colors1 = create2DArray(spriteWidth);
-//   colors2 = create2DArray(spriteWidth);
-//   colors3 = create2DArray(spriteWidth);
   totalFrames += 1;
 
   newArray = create2DArray(spriteWidth);
@@ -452,11 +502,12 @@ function exportCanvas() {
         exportSpriteSheetContext.drawImage(img, spriteWidth * exportingFrame, 0);
     }
     let button = document.getElementById('exportBtn');
-        button.setAttribute("href", exportSpriteSheet);
-            var link = document.createElement('a');
-            link.download = 'YourSpriteSheet.png';
-            link.href = exportSpriteSheet.toDataURL("image/png");
-            link.click();
+    let name = document.getElementById('filename').value || "spritesheet";
+    button.setAttribute("href", exportSpriteSheet);
+    var link = document.createElement('a');
+    link.download = name + ".png";
+    link.href = exportSpriteSheet.toDataURL("image/png");
+    link.click();
 }
 function exportCanvasFrame() {
     let exportCanvas = createContext(spriteWidth, spriteHeight);
@@ -479,10 +530,11 @@ function exportCanvasFrame() {
     let img = exportCanvas.toDataURL("image/png");
     let button = document.getElementById('exportBtn');
     button.setAttribute("href", img);
-        var link = document.createElement('a');
-        link.download = 'YourSprite.png';
-        link.href = img;
-        link.click();
+    let name = document.getElementById('filename').value || "sprite";
+    var link = document.createElement('a');
+    link.download = name + ".png";
+    link.href = img;
+    link.click();
 }
 
 function createContext(width, height) {
