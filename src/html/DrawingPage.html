@@ -108,8 +108,8 @@
                 <div class="row">
                     <ul class="settings-list">
                         <li>
-                            <button id="saveBtn" class="btn btn-dark" onclick="saveSpriteJson();">Save&nbsp;&nbsp;</button>
-                            <button id="loadBtn" class="btn btn-dark" onclick="saveSpriteJson();">Load&nbsp;&nbsp;</button>
+                            <button id="saveBtn" class="btn btn-dark" onclick="saveSpriteJson();">Save&nbsp;&nbsp;</button><a id="downloadSave" style="display:none"></a>
+                            <input id="loadFile" type="file" style="display: none" accept="application/JSON" /><button id="loadBtn" class="btn btn-dark" onclick="loadSpriteJson();">Load&nbsp;&nbsp;</button>
                         </li>
                         <li>
                             <button id="togglePreviewBtn" class="btn btn-dark" onclick="TogglePreviewAnimation();HandleToggleStyle();" value="true">Play&nbsp;&nbsp;&nbsp;</button>

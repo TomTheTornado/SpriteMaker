@@ -21,6 +21,7 @@ let playingFrame = 0;
 let currentFrame = 0;
 let totalFrames = 0;
 let frames = [];
+
 function setupCanvas() {
     let canvas = document.getElementById("mainCanvas");
     let context = canvas.getContext("2d");
@@ -45,6 +46,7 @@ function setupCanvas() {
     }
 
     setupFrame();
+    document.getElementById('loadFile').addEventListener('change', uploadFile);
 
     canvas.addEventListener('mousedown', function(evt) {
         mouseDown = true;
@@ -79,10 +81,54 @@ function setupCanvas() {
         }, false);
 }
 
+function saveSpriteJson() {
+    let name = "sprite";
+    let json = { frames,
+                 "totalFrames": totalFrames,
+                 "spriteWidth": spriteWidth,
+                 "spriteHeight": spriteHeight
+                }
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json));
+    let a = document.getElementById('downloadSave');
+    a.setAttribute("href", dataStr);
+    a.setAttribute("download", name + ".json");
+    a.click();
+}
+
+function loadSpriteJson() {
+    document.getElementById('loadFile').click();
+}
+
+function uploadFile() {
+    let reader = new FileReader();
+    reader.onload = onReaderLoad;
+    reader.readAsText(event.target.files[0]);
+}
+
+function onReaderLoad(event) {
+    let obj = JSON.parse(event.target.result);
+
+    spriteWidth = obj.spriteWidth;
+    spriteHeight = obj.spriteHeight;
+
+    totalFrames = obj.totalFrames;
+    currentFrame = 0;
+    frames = obj.frames;
+
+    let canvas = document.getElementById("mainCanvas");
+    let context = canvas.getContext("2d");
+
+    spriteWidthPixels = canvas.width / spriteWidth;
+    spriteHeightPixels = canvas.height / spriteHeight;
+
+    colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
+    colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
+    colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
+    //setupCanvas();
+    
+}
+
 function setupFrame() {
-//   colors1 = create2DArray(spriteWidth);
-//   colors2 = create2DArray(spriteWidth);
-//   colors3 = create2DArray(spriteWidth);
   totalFrames += 1;
 
   newArray = create2DArray(spriteWidth);
