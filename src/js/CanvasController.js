@@ -122,13 +122,14 @@ function onReaderLoad(event) {
     spriteHeightPixels = canvas.height / spriteHeight;
 
     currentFrame = 0;
+    playingFrame = 0;
+
     colors1 = JSON.parse(JSON.stringify((frames[currentFrame][0])));
     colors2 = JSON.parse(JSON.stringify((frames[currentFrame][1])));
     colors3 = JSON.parse(JSON.stringify((frames[currentFrame][2])));
 
     currentLayer = JSON.parse(JSON.stringify((frames[currentFrame][0])));
     layerNum = 1;
-    
 }
 
 function setupFrame() {
