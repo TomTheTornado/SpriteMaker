@@ -107,7 +107,13 @@
                 </div>
                 <div class="row">
                     <ul class="settings-list">
-                        <button id="togglePreviewBtn" class="btn btn-dark" onclick="TogglePreviewAnimation();HandleToggleStyle();" value="true">Play&nbsp;&nbsp;&nbsp;</button>
+                        <li>
+                            <button id="saveBtn" class="btn btn-dark" onclick="saveSpriteJson();">Save&nbsp;&nbsp;</button>
+                            <button id="loadBtn" class="btn btn-dark" onclick="saveSpriteJson();">Load&nbsp;&nbsp;</button>
+                        </li>
+                        <li>
+                            <button id="togglePreviewBtn" class="btn btn-dark" onclick="TogglePreviewAnimation();HandleToggleStyle();" value="true">Play&nbsp;&nbsp;&nbsp;</button>
+                        </li>
                         <li>
                             <button class="btn btn-dark" onclick="resizeCanvas();">Resize</button>
                             X:<input id="canX" type="text" name="canX" style="width: 3vh" value="30">
