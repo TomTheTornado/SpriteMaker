@@ -21,6 +21,7 @@ let playingFrame = 0;
 let currentFrame = 0;
 let totalFrames = 0;
 let frames = [];
+let time = 0;
 
 let exporting = false;
 
@@ -415,7 +416,6 @@ function drawAllLayers() {
 }
 
 function drawAllLayersOfFrame(frame, canvas) {
-    console.log("HERE");
     drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][2])), canvas);
     drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][1])), canvas);
     drawLayerOnCanvas(JSON.parse(JSON.stringify(frames[frame][0])), canvas);
@@ -608,7 +608,7 @@ function getMousePos(canvas, evt) {
     }
   }
 
-  function showPreview() {
+  async function showPreview() {
     if (exporting) return;
     let preview = document.getElementById('preview');
     let previewContext = preview.getContext("2d");
@@ -621,19 +621,24 @@ function getMousePos(canvas, evt) {
         clearCanvas(fakeCanvas);
         drawAllLayersOfFrame(playingFrame, fakeCanvas);
         previewContext.drawImage(fakeCanvas, 0, 0);
-        playingFrame += 1;
-        if (playingFrame >= totalFrames)
-            playingFrame = 0;
+        let fps = document.getElementById("fpsValue").innerHTML;
+        if (Date.now() - time > 1000 / fps) {
+            time = Date.now();
+            playingFrame += 1;
+            if (playingFrame >= totalFrames)
+                playingFrame = 0;
+        }
     }
   }
 
   function TogglePreviewAnimation() {
       previewPlaying = !previewPlaying;
+      time = Date.now();
   }
 
 async function exportGif() {
       exporting = true;
-      console.log("Exporting as gif");
+      let fps = document.getElementById("fpsValue").innerHTML;
 
       let gif = new GIF({
         workers: 2,
@@ -644,15 +649,10 @@ async function exportGif() {
       for (let i = 0; i < totalFrames; i++) {
         clearCanvas(canvas);
         drawAllLayersOfFrame(i, canvas);
-        gif.addFrame(canvas, {copy: true, delay: 100, background: "FFFF00"});
-        console.log("ADDING FRAME " + i);
+        gif.addFrame(canvas, {copy: true, delay: 1000 / fps, background: "FFFF00"});
       }
 
       gif.on('finished', function(blob) {
-          console.log("GOT A BLOG")
-          console.log(blob);
-        //window.open(URL.createObjectURL(blob));
-
         let name = "test";
         let a = document.getElementById('downloadGif');
         a.setAttribute("href", URL.createObjectURL(blob));
