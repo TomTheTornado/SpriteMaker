@@ -653,7 +653,7 @@ async function exportGif() {
       }
 
       gif.on('finished', function(blob) {
-        let name = "test";
+        let name = document.getElementById('filename').value || "spriteanimation";
         let a = document.getElementById('downloadGif');
         a.setAttribute("href", URL.createObjectURL(blob));
         a.setAttribute("download", name + ".gif");
