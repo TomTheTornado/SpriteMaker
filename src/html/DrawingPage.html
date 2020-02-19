@@ -116,6 +116,9 @@
                             </form>
                         </li>
                         <li>
+                            <input type="range" min="1" max="24" value="12" class="slider" id="fpsSlider"><p>FPS: <span id="fpsValue"></span></p>
+                        </li>
+                        <li>
                             <button id="saveBtn" class="btn btn-dark" onclick="saveSpriteJson();">Save&nbsp;&nbsp;</button><a id="downloadSave" style="display:none"></a>
                             <input id="loadFile" type="file" style="display: none" accept="application/JSON" /><button id="loadBtn" class="btn btn-dark" onclick="loadSpriteJson();">Load&nbsp;&nbsp;</button>
                         </li>
@@ -129,6 +132,9 @@
                         </li>
                         <li>
                             <button class="btn btn-dark" onclick="exportCanvas();">Export Spritesheet</button>
+                        </li>
+                        <li>
+                            <button class="btn btn-dark" onclick="exportGif();">Export Gif&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button><a id="downloadGif" style="display:none"></a>
                         </li>
                         <li>
                             <button id="exportBtn" class="btn btn-dark" onclick="exportCanvasFrame();">Export Frame&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
