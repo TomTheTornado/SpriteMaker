@@ -1,3 +1,9 @@
+var slider = document.getElementById("fpsSlider");
+var output = document.getElementById("fpsValue");
+output.innerHTML = slider.value;
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
 
 function selectButton(element) {
     document.getElementById('layer1button').className="btn btn-dark";
